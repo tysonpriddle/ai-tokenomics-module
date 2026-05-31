@@ -131,6 +131,7 @@ const GAME = (function () {
         if (newTier > prevTier) {
             STATE.tier = newTier;
             _updateHeader();
+            if (typeof SOUND !== 'undefined') SOUND.play('tierUp');
             showTierUpOverlay(TIERS[newTier]);
             if (newTier === 4) awardBadge('theArchitect');
         } else {
@@ -146,6 +147,7 @@ const GAME = (function () {
     }
 
     function recordCorrectAnswer(isFirstAttempt) {
+        if (typeof SOUND !== 'undefined') SOUND.play('correct');
         const now = Date.now();
 
         // First Blood
@@ -176,6 +178,7 @@ const GAME = (function () {
     }
 
     function recordWrongAnswer() {
+        if (typeof SOUND !== 'undefined') SOUND.play('incorrect');
         STATE.streak = 0;
         _speedCorrectCount = 0;
         _updateStreak();
@@ -267,6 +270,7 @@ const GAME = (function () {
     // ---- Overlay / UI ----
 
     function showBadgeOverlay(def) {
+        if (typeof SOUND !== 'undefined') SOUND.play('badge');
         const overlay = document.getElementById('overlay');
         if (!overlay) return;
 

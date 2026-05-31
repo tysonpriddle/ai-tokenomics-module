@@ -69,6 +69,9 @@ var STATE = {
     // Update header on load
     GAME.updateHeader();
 
+    // Scroll progress bar
+    initScrollProgress();
+
     // Session timer — save every 60s
     setInterval(function () {
         STATE.totalTime = Math.floor((Date.now() - STATE.startTime) / 1000);
@@ -178,6 +181,21 @@ function buildShell() {
     themeBtn.onclick = toggleTheme;
     right.appendChild(themeBtn);
 
+    // Mute toggle
+    var muteBtn = document.createElement('button');
+    muteBtn.className = 'theme-toggle-btn';
+    muteBtn.id = 'mute-toggle-btn';
+    muteBtn.title = 'Toggle sound';
+    muteBtn.textContent = (typeof SOUND !== 'undefined' && SOUND.isMuted()) ? '🔇' : '🔊';
+    muteBtn.onclick = function () {
+        if (typeof SOUND === 'undefined') return;
+        var nowMuted = SOUND.toggleMute();
+        muteBtn.textContent = nowMuted ? '🔇' : '🔊';
+        muteBtn.title = nowMuted ? 'Sound off — click to enable' : 'Sound on — click to mute';
+        if (!nowMuted) SOUND.play('click');
+    };
+    right.appendChild(muteBtn);
+
     // TC display — aria-live so screen readers announce balance changes
     var tcDisplay = document.createElement('div');
     tcDisplay.className = 'tc-display';
@@ -205,6 +223,7 @@ function navigateTo(sectionIdx, skipAnimation) {
     var sections = CONTENT.sections;
     if (sectionIdx < 0 || sectionIdx >= sections.length) return;
 
+    if (typeof SOUND !== 'undefined') SOUND.play('navigate');
     STATE.currentSection = sectionIdx;
     window.scrollTo({ top: 0, behavior: 'instant' });
     var section = sections[sectionIdx];
@@ -1534,7 +1553,7 @@ function renderCertificate(wrap, score, total) {
     printBtn.className = 'btn btn-ghost';
     printBtn.textContent = '↓ Save Certificate (PDF)';
     printBtn.onclick = function () {
-        GAME.showToast('PDF export available via your LMS portal.', 'amber');
+        window.print();
     };
     layout.appendChild(printBtn);
 
@@ -1599,6 +1618,7 @@ function initScrollUnlock(wrap) {
     function unlock() {
         if (unlocked) return;
         unlocked = true;
+        if (typeof SOUND !== 'undefined') SOUND.play('unlock');
         continueBtn.classList.remove('btn-locked');
         continueBtn.classList.add('btn-unlock-anim');
         continueBtn.disabled = false;
@@ -1645,11 +1665,11 @@ function buildCostExplosionSVG() {
         '<svg viewBox="0 0 480 210" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
         '  <rect width="480" height="210" fill="none"/>',
         '  <!-- Grid lines -->',
-        '  <line x1="60" y1="170" x2="450" y2="170" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>',
-        '  <line x1="60" y1="135" x2="450" y2="135" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>',
-        '  <line x1="60" y1="100" x2="450" y2="100" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>',
-        '  <line x1="60" y1="65" x2="450" y2="65" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>',
-        '  <line x1="60" y1="30" x2="450" y2="30" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>',
+        '  <line x1="60" y1="170" x2="450" y2="170" style="stroke: var(--border)" stroke-width="1"/>',
+        '  <line x1="60" y1="135" x2="450" y2="135" style="stroke: var(--border)" stroke-width="1"/>',
+        '  <line x1="60" y1="100" x2="450" y2="100" style="stroke: var(--border)" stroke-width="1"/>',
+        '  <line x1="60" y1="65" x2="450" y2="65" style="stroke: var(--border)" stroke-width="1"/>',
+        '  <line x1="60" y1="30" x2="450" y2="30" style="stroke: var(--border)" stroke-width="1"/>',
         '  <!-- Budget line -->',
         '  <line x1="60" y1="115" x2="450" y2="115" stroke="rgba(239,68,68,0.45)" stroke-width="1.5" stroke-dasharray="6,4"/>',
         '  <text x="453" y="119" fill="rgba(239,68,68,0.7)" font-size="8" font-family="monospace">BUDGET</text>',
@@ -1674,13 +1694,13 @@ function buildCostExplosionSVG() {
         '  <text x="388" y="145" fill="rgba(239,68,68,0.8)" font-size="8" font-family="monospace" text-anchor="middle">EXCEEDED</text>',
         '  <text x="388" y="155" fill="rgba(239,68,68,0.5)" font-size="7" font-family="monospace" text-anchor="middle">8 months early</text>',
         '  <!-- Month labels -->',
-        '  <text x="77" y="190" fill="rgba(255,255,255,0.25)" font-size="9" font-family="monospace">JAN</text>',
-        '  <text x="217" y="190" fill="rgba(255,255,255,0.25)" font-size="9" font-family="monospace">FEB</text>',
-        '  <text x="347" y="190" fill="rgba(255,255,255,0.25)" font-size="9" font-family="monospace">MAR</text>',
-        '  <text x="427" y="190" fill="rgba(255,255,255,0.25)" font-size="9" font-family="monospace">APR</text>',
+        '  <text x="77" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">JAN</text>',
+        '  <text x="217" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">FEB</text>',
+        '  <text x="347" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">MAR</text>',
+        '  <text x="427" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">APR</text>',
         '  <!-- Final stat -->',
         '  <text x="18" y="28" fill="#f5a623" font-size="14" font-family="monospace" font-weight="bold">$3.4B</text>',
-        '  <text x="18" y="42" fill="rgba(255,255,255,0.35)" font-size="8" font-family="monospace">gone in 4 months</text>',
+        '  <text x="18" y="42" style="fill: var(--text-3)" font-size="8" font-family="monospace">gone in 4 months</text>',
         '</svg>'
     ].join('\n');
     return wrap;
@@ -1696,13 +1716,13 @@ function buildTokenizationSVG() {
         '<svg viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
         '  <rect width="480" height="140" fill="none"/>',
         '  <!-- Input phrase -->',
-        '  <text x="24" y="35" fill="rgba(255,255,255,0.5)" font-size="10" font-family="monospace" letter-spacing="0.08em">INPUT TEXT</text>',
-        '  <text x="24" y="58" fill="rgba(255,255,255,0.85)" font-size="15" font-family="monospace">"quarterly financial results"</text>',
+        '  <text x="24" y="35" style="fill: var(--text-2)" font-size="10" font-family="monospace" letter-spacing="0.08em">INPUT TEXT</text>',
+        '  <text x="24" y="58" style="fill: var(--text)" font-size="15" font-family="monospace">"quarterly financial results"</text>',
         '  <!-- Arrow -->',
         '  <line x1="240" y1="72" x2="240" y2="88" stroke="rgba(245,158,11,0.5)" stroke-width="2"/>',
         '  <polygon points="234,86 246,86 240,96" fill="rgba(245,158,11,0.6)"/>',
         '  <!-- Token blocks row -->',
-        '  <text x="24" y="112" fill="rgba(255,255,255,0.5)" font-size="10" font-family="monospace" letter-spacing="0.08em">TOKENS (~7)</text>',
+        '  <text x="24" y="112" style="fill: var(--text-2)" font-size="10" font-family="monospace" letter-spacing="0.08em">TOKENS (~7)</text>',
         '  <!-- Token: "qu" -->',
         '  <rect x="110" y="100" width="30" height="22" rx="4" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.5)" stroke-width="1"/>',
         '  <text x="125" y="115" fill="#f5a623" font-size="10" font-family="monospace" text-anchor="middle">qu</text>',
@@ -1725,7 +1745,7 @@ function buildTokenizationSVG() {
         '  <rect x="314" y="100" width="50" height="22" rx="4" fill="rgba(245,158,11,0.2)" stroke="rgba(245,158,11,0.5)" stroke-width="1"/>',
         '  <text x="339" y="115" fill="#f5a623" font-size="10" font-family="monospace" text-anchor="middle">results</text>',
         '  <!-- Note -->',
-        '  <text x="380" y="112" fill="rgba(255,255,255,0.3)" font-size="9" font-family="monospace">≠ 3 words</text>',
+        '  <text x="380" y="112" style="fill: var(--text-3)" font-size="9" font-family="monospace">≠ 3 words</text>',
         '</svg>'
     ].join('\n');
     return wrap;
@@ -1741,10 +1761,10 @@ function buildUsageAnomalySVG() {
         '<svg viewBox="0 0 480 190" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
         '  <rect width="480" height="190" fill="none"/>',
         '  <!-- Grid -->',
-        '  <line x1="60" y1="150" x2="440" y2="150" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>',
-        '  <line x1="60" y1="120" x2="440" y2="120" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>',
-        '  <line x1="60" y1="90" x2="440" y2="90" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>',
-        '  <line x1="60" y1="60" x2="440" y2="60" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>',
+        '  <line x1="60" y1="150" x2="440" y2="150" style="stroke: var(--border)" stroke-width="1"/>',
+        '  <line x1="60" y1="120" x2="440" y2="120" style="stroke: var(--border)" stroke-width="1"/>',
+        '  <line x1="60" y1="90" x2="440" y2="90" style="stroke: var(--border)" stroke-width="1"/>',
+        '  <line x1="60" y1="60" x2="440" y2="60" style="stroke: var(--border)" stroke-width="1"/>',
         '  <!-- Team average line -->',
         '  <line x1="60" y1="130" x2="440" y2="130" stroke="rgba(6,182,212,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>',
         '  <text x="444" y="134" fill="rgba(6,182,212,0.6)" font-size="8" font-family="monospace">AVG</text>',
@@ -1768,14 +1788,14 @@ function buildUsageAnomalySVG() {
         '  <rect x="268" y="22" width="120" height="46" rx="4" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>',
         '  <line x1="260" y1="38" x2="268" y2="38" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>',
         '  <text x="278" y="38" fill="#ef4444" font-size="9" font-family="monospace" font-weight="bold">10× team average</text>',
-        '  <text x="278" y="52" fill="rgba(255,255,255,0.45)" font-size="8" font-family="monospace">Investigate first.</text>',
-        '  <text x="278" y="63" fill="rgba(255,255,255,0.35)" font-size="8" font-family="monospace">High spend ≠ waste.</text>',
+        '  <text x="278" y="52" style="fill: var(--text-2)" font-size="8" font-family="monospace">Investigate first.</text>',
+        '  <text x="278" y="63" style="fill: var(--text-3)" font-size="8" font-family="monospace">High spend ≠ waste.</text>',
         '  <!-- User labels -->',
-        '  <text x="101" y="170" fill="rgba(255,255,255,0.3)" font-size="9" font-family="monospace" text-anchor="middle">Alex</text>',
-        '  <text x="169" y="170" fill="rgba(255,255,255,0.3)" font-size="9" font-family="monospace" text-anchor="middle">Sam</text>',
+        '  <text x="101" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Alex</text>',
+        '  <text x="169" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Sam</text>',
         '  <text x="238" y="170" fill="#ef4444" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Jordan</text>',
-        '  <text x="307" y="170" fill="rgba(255,255,255,0.3)" font-size="9" font-family="monospace" text-anchor="middle">Taylor</text>',
-        '  <text x="375" y="170" fill="rgba(255,255,255,0.3)" font-size="9" font-family="monospace" text-anchor="middle">Casey</text>',
+        '  <text x="307" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Taylor</text>',
+        '  <text x="375" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Casey</text>',
         '</svg>'
     ].join('\n');
     return wrap;
@@ -2008,6 +2028,7 @@ function checkSectionComplete(section) {
         STATE.completedSections.push(section.id);
         GAME.completeSection(section.id);
         xAPI.sectionCompleted(section.id, section.title, 0);
+        if (typeof SOUND !== 'undefined') SOUND.play('sectionComplete');
     }
     updateProgressBar();
 
@@ -2015,4 +2036,29 @@ function checkSectionComplete(section) {
     if (STATE.completedSections.length >= CONTENT.sections.length - 2) {
         SCORM.setCompletion('completed');
     }
+}
+
+// ---- Scroll progress bar ----
+
+function initScrollProgress() {
+    var bar = document.createElement('div');
+    bar.className = 'scroll-progress-bar';
+    bar.setAttribute('role', 'progressbar');
+    bar.setAttribute('aria-label', 'Reading progress');
+    bar.setAttribute('aria-valuemin', '0');
+    bar.setAttribute('aria-valuemax', '100');
+    bar.setAttribute('aria-valuenow', '0');
+    var fill = document.createElement('div');
+    fill.className = 'scroll-progress-fill';
+    fill.id = 'scroll-progress-fill';
+    bar.appendChild(fill);
+    document.body.appendChild(bar);
+
+    window.addEventListener('scroll', function () {
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var pct = docHeight > 0 ? Math.min(100, Math.round((scrollTop / docHeight) * 100)) : 0;
+        fill.style.width = pct + '%';
+        bar.setAttribute('aria-valuenow', pct);
+    }, { passive: true });
 }

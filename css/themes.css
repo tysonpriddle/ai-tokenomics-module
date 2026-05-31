@@ -897,7 +897,7 @@
     display: grid;
     grid-template-columns: 1fr 420px;
     gap: var(--s12);
-    align-items: center;
+    align-items: stretch;
     width: 100%;
     max-width: 1200px;
 }
@@ -910,6 +910,7 @@
 .intro-col-left {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Intro start button glow */
@@ -1446,4 +1447,43 @@
     .section-footer-right { justify-content: stretch; }
     .section-footer-right .btn { flex: 1; }
     .assessment-header { flex-direction: column; align-items: flex-start; }
+}
+
+/* ============================================================
+   Print — certificate only
+   ============================================================ */
+
+@media print {
+    body { background: #fff !important; color: #1a1208 !important; }
+
+    /* Hide everything that isn't the certificate card */
+    #app-header,
+    .section-footer,
+    .score-circle-wrap,
+    .advanced-mode-section,
+    .btn-ghost,
+    #toast-container,
+    #overlay,
+    #debug-panel { display: none !important; }
+
+    #app-main { padding: 0 !important; max-width: 100% !important; }
+
+    /* Certificate card fills the page */
+    .certificate-wrap {
+        width: 160mm !important;
+        margin: 20mm auto !important;
+        border: 2px solid #b45309 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        background: #fffbf5 !important;
+        padding: 32px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Ensure text is dark on white */
+    .certificate-wrap * { color: #1a1208 !important; }
+    .certificate-name { color: #b45309 !important; font-size: 28px !important; }
+    .certificate-seal { color: #b45309 !important; }
+    .certificate-divider { color: #b45309 !important; }
+    .cert-bg-glyph { display: none !important; }
 }

@@ -128,6 +128,7 @@ const INTERACTIONS = (function () {
             pill.textContent = ex.label;
 
             function selectExample() {
+                if (typeof SOUND !== 'undefined') SOUND.play('click');
                 if (activePill) {
                     activePill.style.background = 'var(--surface-3)';
                     activePill.style.color = 'var(--text-3)';
@@ -786,7 +787,7 @@ const INTERACTIONS = (function () {
 
         // Metric: date spike
         const spikeLine = document.createElement('div');
-        spikeLine.style.cssText = 'padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);cursor:pointer;';
+        spikeLine.style.cssText = 'padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;';
         spikeLine.innerHTML = '';
         const spikeInner = document.createElement('div');
         spikeInner.style.cssText = 'display:flex;justify-content:space-between;';
