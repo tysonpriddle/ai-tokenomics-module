@@ -144,14 +144,12 @@
     font-size: 1.1rem;
     line-height: 1.75;
     color: var(--text);
-    max-width: 62ch;
 }
 
 .hook-body-para {
     font-size: 1.1rem;
     line-height: 1.75;
     color: var(--text);
-    max-width: 62ch;
     border-left: 2px solid var(--amber-dark);
     padding-left: var(--s5);
 }
