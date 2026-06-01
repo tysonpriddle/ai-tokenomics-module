@@ -485,20 +485,20 @@ const CONTENT = (function () {
     const questions = [
         {
             id: 'q1',
-            type: 'mcq',
+            type: 'scenario',
             section: 'tokens',
-            text: 'What is a token in the context of large language models?',
+            text: 'A colleague sends a 3-word message to an AI tool and receives an unexpectedly large bill at the end of the month. What is the most likely explanation?',
             options: [
-                { id: 'a', text: 'A unit of cryptocurrency used to pay for AI access' },
-                { id: 'b', text: 'The smallest unit of text processed by an LLM, roughly 3–4 characters', correct: true },
-                { id: 'c', text: 'An access credential or API key' },
-                { id: 'd', text: 'A measure of AI model accuracy' }
+                { id: 'a', text: 'The AI vendor charges a connection fee for each separate message sent' },
+                { id: 'b', text: 'Short prompts trigger a minimum charge regardless of actual usage' },
+                { id: 'c', text: 'The AI\'s lengthy responses generated significant output tokens — output costs 3–5× more than input', correct: true },
+                { id: 'd', text: 'The AI misunderstood the short prompt and ran multiple attempts internally' }
             ],
             feedback: {
-                correct: 'Exactly right. A token is approximately 3–4 characters in English text. Not a word, not a sentence. The model converts your text into tokens before processing it.',
-                incorrect: 'A token is the smallest unit of text processed by an LLM, roughly 3–4 characters in English. It\'s not a word, character, or currency. See Section 2.'
+                correct: 'Right. A short prompt doesn\'t mean a cheap request. Output tokens — what the AI writes back — cost 3–5× more than input tokens. A 3-word question that triggers a 2,000-word response will cost far more than a detailed prompt that produces a concise one.',
+                incorrect: 'The answer is output tokens. A 3-word prompt can trigger a very long response, and output tokens cost 3–5× more than input. A short question that produces a 2,000-word reply will cost far more than a structured prompt that produces a tight 100-word answer. See Section 2.'
             },
-            tags: ['tokens', 'fundamentals']
+            tags: ['tokens', 'application']
         },
         {
             id: 'q2',
@@ -551,37 +551,37 @@ const CONTENT = (function () {
         },
         {
             id: 'q5',
-            type: 'mcq',
+            type: 'scenario',
             section: 'consumption',
-            text: 'What does the context window primarily determine for AI usage costs?',
+            text: 'Your team runs a daily AI-assisted client briefing workflow. On Monday, each request costs $0.02. By Friday, the same questions cost $0.08 — four times as much. Usage patterns haven\'t changed. What is the most likely cause?',
             options: [
-                { id: 'a', text: 'How quickly the AI generates a response' },
-                { id: 'b', text: 'The visual quality of AI-generated images' },
-                { id: 'c', text: 'How much prior conversation and document content the AI can process per request, directly affecting input costs', correct: true },
-                { id: 'd', text: 'The number of concurrent users on the platform' }
+                { id: 'a', text: 'The AI vendor applied a weekend surcharge starting Friday' },
+                { id: 'b', text: 'The conversation history has accumulated across the week — each request now re-processes all prior messages', correct: true },
+                { id: 'c', text: 'The AI model selected a more powerful tier automatically as usage increased' },
+                { id: 'd', text: 'Output responses have grown longer as the AI learned team preferences' }
             ],
             feedback: {
-                correct: 'Correct. The context window determines how much text the model can "hold in mind" at once, including your prompt, prior conversation history, and any documents you\'ve attached. More context means more input tokens and higher cost.',
-                incorrect: 'The context window determines how much prior text the model can process in one request: your prompt, conversation history, and attached documents. A large context window enables longer conversations but also drives up input token costs. See Section 3.'
+                correct: 'Exactly right. Every message in an ongoing conversation is re-sent with each new request. By Friday, each question is carrying the full week\'s conversation history — massively inflating input token volume. Starting a new conversation daily would eliminate this cost drift.',
+                incorrect: 'The cause is accumulated context. Every prior message in an ongoing conversation is re-sent with each new request. By day 5, a simple question carries the full week of history as context, multiplying the input token cost. Starting fresh each day is the fix. See Section 3.'
             },
-            tags: ['consumption', 'context']
+            tags: ['consumption', 'application']
         },
         {
             id: 'q6',
-            type: 'mcq',
-            section: 'hook',
-            text: 'According to the Uber case study, what was the primary driver of their AI budget overrun?',
+            type: 'judgement',
+            section: 'governance',
+            text: 'A CFO shows you a report: AI spend grew 300% last quarter. Team size and output stayed flat. Which single governance action most directly addresses the root cause?',
             options: [
-                { id: 'a', text: 'Choosing an expensive AI provider without competitive tendering' },
-                { id: 'b', text: 'An internal leaderboard incentivising maximum AI usage volume without any cost awareness', correct: true },
-                { id: 'c', text: 'A technical error causing duplicate API calls across all engineering teams' },
-                { id: 'd', text: 'Poor contract negotiation with their AI vendor' }
+                { id: 'a', text: 'Cancel all AI tool access until a full cost-benefit analysis is completed' },
+                { id: 'b', text: 'Switch from a consumption model to a licence model to cap future spend' },
+                { id: 'c', text: 'Require every team to link AI spend to specific deliverables — connect cost to output, not just activity', correct: true },
+                { id: 'd', text: 'Limit AI tool access to senior staff who can justify the investment' }
             ],
             feedback: {
-                correct: 'Right. Uber\'s leaderboard rewarded volume. Engineers consumed as much as they could. There was no cost visibility, no output accountability, and no governance threshold. The incentive design caused the blowout, not the technology.',
-                incorrect: 'The primary driver was Uber\'s internal leaderboard, which ranked engineers by AI usage volume. This incentivised maximum consumption with zero cost awareness or output accountability. See Section 1 and Section 5.'
+                correct: 'Correct. Spend without output accountability is the root cause. People consumed AI resources because nothing connected that spend to tangible results. Requiring teams to link spend to deliverables fixes the incentive, not just the symptom.',
+                incorrect: 'The root cause is no link between spend and output. Switching models or cancelling access treats the symptom. Connecting AI spend to specific deliverables changes the incentive structure — which is what actually caused the blowout. See Section 5.'
             },
-            tags: ['governance', 'case-study']
+            tags: ['governance', 'judgement']
         },
         {
             id: 'q7',
@@ -602,18 +602,20 @@ const CONTENT = (function () {
         },
         {
             id: 'q8',
-            type: 'truefalse',
+            type: 'judgement',
             section: 'licences',
-            text: 'True or False: Microsoft cancelled Claude Code access for its engineering team primarily because the tool was underperforming.',
+            text: 'A finance director is reviewing AI tools. One tool has strong user reviews and measurable productivity gains, but the monthly bill is unpredictable — it spikes whenever project load increases. What is the most appropriate recommendation?',
             options: [
-                { id: 'a', text: 'True: Microsoft found the productivity gains were insufficient to justify the cost' },
-                { id: 'b', text: 'False: Microsoft simultaneously reported 80% productivity gains while cancelling access due to cost containment', correct: true }
+                { id: 'a', text: 'Cancel the tool — unpredictable costs are not acceptable in an enterprise environment' },
+                { id: 'b', text: 'Keep the consumption model but introduce spend alerts and monthly budget caps', correct: true },
+                { id: 'c', text: 'Switch to a licence model immediately, regardless of how the team uses the tool' },
+                { id: 'd', text: 'Do nothing — productivity gains justify any cost level' }
             ],
             feedback: {
-                correct: 'Correct. The contradiction is stark: Microsoft\'s internal reports cited 80% productivity gains from the tool at the same time as the cancellation. The driver was cost containment, not performance. This illustrates the structural tension between consumption pricing and enterprise budgeting.',
-                incorrect: 'False. Microsoft explicitly cited cost containment as the reason. Not underperformance. The company\'s own internal report documented 80% productivity gains from the tool. The issue was that consumption-based pricing didn\'t fit enterprise financial planning assumptions.'
+                correct: 'Right call. The tool is delivering value. The problem is visibility, not the model itself. Spend alerts and budget caps preserve the flexibility of consumption pricing while giving finance the control they need. A licence model may be appropriate later — but only once usage patterns are understood.',
+                incorrect: 'The tool is working — the issue is cost visibility, not the tool itself. Spend alerts and caps give finance control without abandoning a productive tool. Switching to a licence model without understanding usage patterns may cost more. Cancelling means losing documented productivity gains. See Section 4.'
             },
-            tags: ['licences', 'case-study']
+            tags: ['licences', 'judgement']
         },
         {
             id: 'q9',
@@ -655,32 +657,32 @@ const CONTENT = (function () {
 
     const advancedTips = [
         {
-            title: 'Structured Output Schemas',
-            body: 'Request JSON or XML output with a defined schema. Models constrained to structured output produce shorter, more parseable responses. This also eliminates the cost of parsing natural language in downstream code.'
+            title: 'Tell the AI exactly what format you want',
+            body: 'Instead of asking for a general response, specify the structure: "Return 3 bullet points — one finding, one risk, one recommended action." Structured output instructions produce shorter, more consistent responses and remove the back-and-forth of reformatting. Fewer tokens, better output.'
         },
         {
-            title: 'Prefix Caching Window Management',
-            body: 'Anthropic\'s prompt caching requires the cached portion to appear at the start of the prompt and remain identical across requests. Design system prompts to put stable instructions first and variable user input last.'
+            title: 'Keep your standard instructions identical across requests',
+            body: 'If you use the same role, context, or rules in every prompt (e.g., "You are a senior analyst. Always respond in plain English. Avoid jargon."), put those instructions at the top and keep them word-for-word identical. AI tools that support caching — including Claude and GPT-4o — reuse processed versions of stable instructions, cutting that portion of your input cost by up to 90%.'
         },
         {
-            title: 'Batch API for Non-Urgent Tasks',
-            body: 'OpenAI and Anthropic offer batch API endpoints for non-time-sensitive workloads. Batch processing delivers 50% cost reduction in exchange for up to 24-hour turnaround. Ideal for overnight document processing.'
+            title: 'Ask for a cost estimate before sending a large request',
+            body: 'Before sending a large document or a complex prompt, check whether your AI tool shows a token count or cost preview. Many enterprise platforms surface this before you submit. If yours does not, ask your IT or platform admin to enable usage dashboards. Knowing the cost before you commit is the single best habit for cost-aware AI use.'
         },
         {
-            title: 'Model Routing by Task Complexity',
-            body: 'Build a routing layer that assesses query complexity before selecting a model. Simple queries (lookup, format, extract) route to cheap models; complex reasoning routes to premium tiers. 80% of enterprise AI requests can typically be handled by cost-optimized models.'
+            title: 'Match the model to the task, not the habit',
+            body: 'The most powerful AI model is not always the right one. Formatting a table, checking an email, or extracting a date from a document does not require a flagship model. Ask your platform admin which model tiers are available. Use the lightest model that produces a usable result. For most routine professional tasks, that\'s not the most expensive one.'
         },
         {
-            title: 'Speculative Decoding Awareness',
-            body: 'Some providers implement speculative decoding to reduce latency. This can affect token counting in subtle ways. For cost-sensitive workloads, benchmark actual token usage rather than relying on estimates from tokeniser libraries.'
+            title: 'Convert documents to plain text before sending',
+            body: 'PDFs and Word documents contain hidden formatting tokens — headers, styles, metadata — that add cost without adding meaning. Before attaching a document to an AI request, copy the relevant text into plain text. For teams processing documents regularly, ask IT whether your AI platform has a document conversion step built in. It typically reduces input token volume by 20–40%.'
         },
         {
-            title: 'Automate format conversion with markitdown',
-            body: 'Microsoft\'s open-source markitdown library (github.com/microsoft/markitdown) converts PDF, DOCX, PPTX, XLSX, HTML, images, and audio to clean Markdown via a single Python call or CLI command. For teams processing documents at scale, integrating markitdown as a pre-processing step before any API call is one of the highest-leverage engineering decisions available. A pipeline that converts, chunks, and caches before sending can reduce input token costs by 40–60% compared to naive full-document submission.'
+            title: 'Reuse prompts across a team, not just yourself',
+            body: 'If you have written a prompt that produces excellent output for a task, share it. A team of 20 people each spending 10 minutes crafting a prompt for the same task costs 200 minutes and produces inconsistent results. A shared prompt library reduces both cost and quality variation. Start with your three most common AI tasks and build a tested prompt for each.'
         },
         {
-            title: 'Token counting before you commit',
-            body: 'Every major provider exposes a token counting endpoint separate from the inference API. Calling it costs nothing and returns exact token counts before you pay for the request. For large or expensive workloads, build a count-then-decide step: if the input exceeds a threshold, trigger chunking or summarization before proceeding. OpenAI\'s tiktoken library and Anthropic\'s count_tokens endpoint both support this pattern.'
+            title: 'Start a new conversation for each new task',
+            body: 'Continuing a long conversation for unrelated follow-up questions carries all prior context — even the parts that are no longer relevant. By the end of a working day, a single chat thread can accumulate thousands of tokens of history that inflate the cost of every new message. Start fresh when the topic changes. Your cost resets. Your context is cleaner.'
         }
     ];
 
@@ -689,31 +691,31 @@ const CONTENT = (function () {
     const sectionQuizzes = {
         q_hook_1: {
             id: 'q_hook_1',
-            text: 'Which of the following best describes why the Uber AI budget overrun happened?',
+            text: 'Your organisation is rolling out an AI tool to 200 staff. You want to avoid a budget blowout. Which single action has the highest preventive impact?',
             options: [
-                { id: 'a', text: 'They chose the most expensive AI vendor on the market' },
-                { id: 'b', text: 'They rewarded AI usage volume without connecting it to cost or outcomes', correct: true },
-                { id: 'c', text: 'Their engineers were unqualified to use AI tools effectively' },
-                { id: 'd', text: 'The AI APIs experienced unexpected price increases mid-contract' }
+                { id: 'a', text: 'Negotiate a fixed-price contract with the AI vendor before launch' },
+                { id: 'b', text: 'Restrict access to senior staff only until the tool is proven' },
+                { id: 'c', text: 'Set usage targets that reward output quality, not consumption volume', correct: true },
+                { id: 'd', text: 'Choose the cheapest available AI model to minimise per-token costs' }
             ],
             feedback: {
-                correct: 'Exactly right. The leaderboard created perverse incentives. Maximum volume regardless of value. That\'s the governance failure at the heart of most AI cost blowouts. +50 TC.',
-                incorrect: 'The core issue was incentive design: a leaderboard rewarding usage volume with no connection to cost or outcomes. Governance, not vendor selection, is the fix.'
+                correct: 'Right. The incentive structure is the lever. When people are measured on what they produce — not how much AI they consume — spend naturally aligns with value. Every major AI cost blowout has an incentive design problem at its core.',
+                incorrect: 'The incentive structure is what matters most. Rewarding output quality rather than usage volume prevents the pattern where people consume AI resources without connecting spend to results. Vendor price and access restrictions are secondary. See Section 1.'
             },
             tcReward: 50
         },
         q_tokens_1: {
             id: 'q_tokens_1',
-            text: 'Approximately how many tokens would the phrase "quarterly financial results" contain?',
+            text: 'You need to share a client report with an AI for analysis. The report is 200 pages. Which statement is most accurate before you send it?',
             options: [
-                { id: 'a', text: '3 tokens (one per word)' },
-                { id: 'b', text: '5–7 tokens', correct: true },
-                { id: 'c', text: '12–15 tokens (one per character)' },
-                { id: 'd', text: '1 token (it\'s a common phrase)' }
+                { id: 'a', text: 'Length doesn\'t matter — AI tools process text at a flat rate regardless of volume' },
+                { id: 'b', text: 'Only the pages you reference in your question will be processed, so 200 pages is fine' },
+                { id: 'c', text: 'A 200-page document is roughly 150,000–300,000 tokens — this may exceed some model limits and will drive significant input costs', correct: true },
+                { id: 'd', text: 'The AI automatically compresses documents before processing, so the actual token count is much lower' }
             ],
             feedback: {
-                correct: 'Right. Three words at roughly 2 tokens each gives 5–7 tokens. Tokens ≈ 3–4 characters, not words. "Quarterly" alone is likely 2–3 tokens.',
-                incorrect: 'Tokens are not words. At roughly 3–4 characters per token, "quarterly financial results" (27 characters + spaces) is approximately 5–7 tokens. See the Token Lab above.'
+                correct: 'Correct. At roughly 750 words per page, a 200-page document is around 150,000 tokens. That\'s the full input cost on every request that includes it. Extracting only the relevant sections before sending is one of the highest-impact cost reductions available.',
+                incorrect: 'A 200-page document is approximately 150,000–300,000 tokens — every page is processed in full. This is the input cost on every single request that includes the document. Sending only the relevant sections can reduce this by 80–90%. See Section 2.'
             },
             tcReward: 50
         },
@@ -734,16 +736,16 @@ const CONTENT = (function () {
         },
         q_consumption_2: {
             id: 'q_consumption_2',
-            text: 'What is "prompt caching" and what cost benefit does it provide?',
+            text: 'Your team sends 50 AI requests daily, each including the same 2,000-word briefing document as context. Which change would reduce your monthly cost the most?',
             options: [
-                { id: 'a', text: 'Storing prompt templates locally to avoid typing them again. No direct cost benefit' },
-                { id: 'b', text: 'The model caches the encoded representation of a stable prompt, avoiding re-tokenisation, with up to 90% reduction in cached input costs', correct: true },
-                { id: 'c', text: 'A rate-limiting mechanism that caches requests to avoid API overload' },
-                { id: 'd', text: 'Saving output responses for reuse, reducing the need for new API calls' }
+                { id: 'a', text: 'Ask staff to write shorter follow-up questions to reduce output token volume' },
+                { id: 'b', text: 'Enable prompt caching — the briefing document is processed once and reused, cutting its input cost by up to 90%', correct: true },
+                { id: 'c', text: 'Reduce the team to 25 requests daily by batching questions together' },
+                { id: 'd', text: 'Switch to a smaller AI model for all requests' }
             ],
             feedback: {
-                correct: 'Exactly right. Prompt caching means the model encodes a stable system prompt once and reuses that encoding. Subsequent requests pay only for new variable input. Anthropic\'s implementation delivers up to 90% reduction in cached input costs.',
-                incorrect: 'Prompt caching is a model-level mechanism where the encoded representation of a stable prompt is stored and reused across requests. This avoids re-tokenising the same system prompt on every call. Anthropic\'s implementation cuts cached input costs by up to 90%.'
+                correct: 'Right. When the same document is sent with every request, it is re-processed as input tokens every single time. Prompt caching stores the processed version so subsequent requests pay only for the new question — reducing that document\'s cost by up to 90% per request.',
+                incorrect: 'The biggest saving comes from not re-processing the same document 50 times a day. Prompt caching stores the processed briefing so only the new question is processed each time — up to 90% reduction on that input. Batching or smaller models help less. See Section 3.'
             },
             tcReward: 50
         },

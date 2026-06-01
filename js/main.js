@@ -80,6 +80,133 @@ var STATE = {
     }, 60000);
 })();
 
+// ---- Glossary / inline tooltips ----
+
+var GLOSSARY = [
+    {
+        terms: ['token', 'tokens'],
+        label: 'Token',
+        definition: 'The smallest unit of text an AI model processes. Roughly 3–4 characters, or about ¾ of an average English word.',
+        analogy: 'Think of it like charging per syllable, not per word.'
+    },
+    {
+        terms: ['api', 'apis'],
+        label: 'API',
+        definition: 'Application Programming Interface — a way for software to request a service from another system. When you use an AI tool, it sends requests to an API and you pay per token used.',
+        analogy: 'Like ordering from a restaurant: each order (request) has a separate cost based on what you ordered (tokens).'
+    },
+    {
+        terms: ['context window'],
+        label: 'Context window',
+        definition: 'The AI\'s working memory for a single request — everything it can see at once: your prompt, any attached documents, and the full conversation history.',
+        analogy: 'Like a whiteboard in a meeting. Only what\'s on the whiteboard gets considered. More on the whiteboard = higher cost.'
+    },
+    {
+        terms: ['prompt caching', 'caching'],
+        label: 'Prompt caching',
+        definition: 'Storing the processed version of a repeated instruction so the AI doesn\'t re-process it on every request. Can reduce costs by up to 90% on the cached portion.',
+        analogy: 'Like printing a standard cover letter once and adding only the name each time, instead of retyping it from scratch.'
+    },
+    {
+        terms: ['input tokens'],
+        label: 'Input tokens',
+        definition: 'Tokens the AI reads: your prompt, attached documents, and conversation history. Typically cheaper than output tokens.',
+        analogy: null
+    },
+    {
+        terms: ['output tokens'],
+        label: 'Output tokens',
+        definition: 'Tokens the AI generates in its response. These cost 3–5× more than input tokens because generating text requires more compute than reading it.',
+        analogy: null
+    },
+    {
+        terms: ['model tier', 'model tiers'],
+        label: 'Model tier',
+        definition: 'Different versions of an AI model with different capabilities and prices. A flagship model (e.g. GPT-4o) can cost 10–50× more per token than a cost-optimised version (e.g. GPT-4o Mini).',
+        analogy: 'Like business vs economy class — the same destination, different cost.'
+    },
+    {
+        terms: ['llm', 'llms', 'large language model'],
+        label: 'LLM',
+        definition: 'Large Language Model. An AI system trained on text to understand and generate language. GPT-4, Claude, and Gemini are examples.',
+        analogy: null
+    }
+];
+
+function buildTooltipSpan(text, entry) {
+    var span = document.createElement('span');
+    span.className = 'term-tip';
+    span.setAttribute('tabindex', '0');
+    span.setAttribute('role', 'button');
+    span.setAttribute('aria-label', entry.label + ': ' + entry.definition);
+    span.textContent = text;
+
+    var popup = document.createElement('div');
+    popup.className = 'term-tip-popup';
+    popup.setAttribute('aria-hidden', 'true');
+
+    var label = document.createElement('strong');
+    label.textContent = entry.label;
+    popup.appendChild(label);
+
+    var def = document.createElement('span');
+    def.textContent = entry.definition;
+    popup.appendChild(def);
+
+    if (entry.analogy) {
+        var em = document.createElement('em');
+        em.textContent = entry.analogy;
+        popup.appendChild(em);
+    }
+
+    span.appendChild(popup);
+    return span;
+}
+
+// Wrap first occurrence of each glossary term in a paragraph element
+function applyTooltips(pEl) {
+    var original = pEl.textContent;
+    if (!original) return;
+
+    var lower = original.toLowerCase();
+    var fragments = []; // array of {text, entry|null}
+    var remaining = original;
+    var usedTerms = {};
+
+    GLOSSARY.forEach(function (entry) {
+        entry.terms.forEach(function (term) {
+            if (usedTerms[term]) return;
+            var idx = lower.indexOf(term);
+            if (idx === -1) return;
+            // Ensure word boundary (not mid-word)
+            var before = idx > 0 ? lower[idx - 1] : ' ';
+            var after = idx + term.length < lower.length ? lower[idx + term.length] : ' ';
+            if (/[a-z0-9]/.test(before) || /[a-z0-9]/.test(after)) return;
+            usedTerms[term] = { idx: idx, entry: entry, term: term };
+        });
+    });
+
+    // Sort by position
+    var sorted = Object.values(usedTerms).sort(function (a, b) { return a.idx - b.idx; });
+    if (sorted.length === 0) return;
+
+    // Rebuild the element with tooltip spans
+    pEl.textContent = '';
+    var pos = 0;
+    sorted.forEach(function (match) {
+        if (match.idx > pos) {
+            pEl.appendChild(document.createTextNode(original.slice(pos, match.idx)));
+        }
+        var matched = original.slice(match.idx, match.idx + match.term.length);
+        pEl.appendChild(buildTooltipSpan(matched, match.entry));
+        pos = match.idx + match.term.length;
+        lower = lower.slice(0, match.idx) + ' '.repeat(match.term.length) + lower.slice(match.idx + match.term.length);
+    });
+    if (pos < original.length) {
+        pEl.appendChild(document.createTextNode(original.slice(pos)));
+    }
+}
+
 // ---- Theme ----
 
 function initTheme() {
@@ -299,8 +426,14 @@ function renderSection(section, container) {
 
     container.appendChild(wrap);
 
-    // Gate Continue button — unlock only after user has scrolled through content
+    // Apply inline glossary tooltips to all body paragraphs in content sections
     if (!section.isIntro && !section.isAssessment) {
+        wrap.querySelectorAll('p').forEach(function (p) {
+            // Skip paragraphs inside quiz/feedback/card headers — tooltip only on body text
+            if (!p.closest('.quiz-wrap') && !p.closest('.case-study-card') && !p.closest('.wiifm-callout')) {
+                applyTooltips(p);
+            }
+        });
         initScrollUnlock(wrap);
     }
 }
@@ -1117,7 +1250,7 @@ function renderAssessment(wrap) {
         return;
     }
 
-    if (STATE.assessmentAttempts >= 2) {
+    if (STATE.assessmentAttempts >= 3) {
         renderAssessmentLocked(wrap);
         return;
     }
@@ -1133,7 +1266,9 @@ function renderAssessment(wrap) {
     metaTitle.textContent = 'FINAL ASSESSMENT';
     var metaSubtitle = document.createElement('p');
     metaSubtitle.style.cssText = 'font-size:0.85rem;color:var(--text-3);max-width:none;margin-top:4px;';
-    metaSubtitle.textContent = (STATE.assessmentAttempts === 0 ? 'Attempt 1 of 2' : 'Attempt 2 of 2, Final') + ' · Pass mark: 80% (' + Math.ceil(questions.length * 0.8) + '/' + questions.length + ' correct)';
+    var attemptNum = STATE.assessmentAttempts + 1;
+    var attemptLabel = 'Attempt ' + attemptNum + ' of 3' + (attemptNum === 3 ? ' — Final attempt' : '');
+    metaSubtitle.textContent = attemptLabel + ' · Pass mark: 80% (' + Math.ceil(questions.length * 0.8) + '/' + questions.length + ' correct)';
     metaDiv.appendChild(metaTitle);
     metaDiv.appendChild(metaSubtitle);
     header.appendChild(metaDiv);

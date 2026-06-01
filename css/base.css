@@ -153,10 +153,15 @@ h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
 h4 { font-size: clamp(1rem, 2vw, 1.35rem); }
 
 p {
-    max-width: 68ch;
     color: var(--text);
     font-size: 1.05rem;
     line-height: 1.75;
+}
+
+/* Constrain reading lines only inside explicit reading contexts */
+.reading-col p,
+.hook-body-para {
+    max-width: 72ch;
 }
 
 strong { color: var(--text); font-weight: 600; }

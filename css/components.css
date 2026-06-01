@@ -854,6 +854,64 @@
                ctaPulse 3s ease-in-out 0.5s infinite;
 }
 
+/* ---- Inline term tooltips ---- */
+
+.term-tip {
+    border-bottom: 1px dashed var(--amber);
+    color: inherit;
+    cursor: help;
+    position: relative;
+    display: inline;
+    white-space: nowrap;
+}
+
+.term-tip-popup {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface-3);
+    border: 1px solid var(--amber-dark);
+    border-radius: var(--r4);
+    padding: var(--s3) var(--s4);
+    width: 280px;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--text);
+    z-index: 800;
+    box-shadow: var(--shadow-md), 0 0 12px rgba(245,158,11,0.1);
+    white-space: normal;
+    pointer-events: none;
+    text-align: left;
+}
+
+.term-tip-popup strong {
+    display: block;
+    color: var(--amber);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--s1);
+    font-family: var(--font-mono);
+}
+
+.term-tip-popup em {
+    display: block;
+    color: var(--text-2);
+    font-style: normal;
+    margin-top: var(--s2);
+    font-size: 0.78rem;
+}
+
+.term-tip:hover .term-tip-popup,
+.term-tip:focus .term-tip-popup {
+    display: block;
+}
+
+/* Keep popup on screen near edges */
+.term-tip:first-child .term-tip-popup { left: 0; transform: none; }
+
 /* ---- Theme toggle button ---- */
 
 .theme-toggle-btn {
