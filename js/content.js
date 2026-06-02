@@ -1,5 +1,5 @@
 /* ============================================================
-   CONTENT.JS — All module content as structured data
+   CONTENT.JS, All module content as structured data
    Section text, case studies, assessment questions, vendor data.
    Australian/UK English throughout.
    ============================================================ */
@@ -47,7 +47,7 @@ const CONTENT = (function () {
                 'By May 2026, Microsoft cancelled most internal Claude Code licences, effective 30 June 2026, the last day of its financial year. Engineers were redirected to GitHub Copilot CLI, Microsoft\'s own first-party tool. The driver was cost containment, not capability.',
                 'The contradiction is stark: Microsoft simultaneously published an internal report citing 80% productivity gains from AI tools while cancelling access to the tool delivering them.'
             ],
-            lesson: 'Token-based billing does not fit traditional enterprise procurement logic. Finance teams budget on fixed per-user assumptions. AI tools charge more the more useful they become. Those two models are fundamentally incompatible without active cost management.',
+            lesson: 'Token-based billing does not fit traditional enterprise procurement logic. Finance teams budget on fixed per-user assumptions. AI tools charge more the more useful they become. Those two models cannot be reconciled without active cost management.',
             sections: ['licences']
         },
 
@@ -129,7 +129,7 @@ const CONTENT = (function () {
             theme: 'theme-tokens',
             estimatedMinutes: 5,
             objective: 'Explain what tokens are and how LLMs process them.',
-            whyItMatters: 'You can\'t cut costs you can\'t measure. Once you see how tokenization actually works, you\'ll spot inefficiencies in your own prompts that are costing real money every day, and you\'ll know exactly where to start cutting.',
+            whyItMatters: 'You can\'t cut costs you can\'t measure. Once you see how tokenisation actually works, you\'ll spot inefficiencies in your own prompts that are costing real money every day, and you\'ll know exactly where to start cutting.',
             content: {
                 eyebrow: 'Section 02: Fundamentals',
                 headline: 'What the model actually reads.',
@@ -285,13 +285,13 @@ const CONTENT = (function () {
         {
             id: 'optimise',
             number: 6,
-            title: 'Optimization Tips and Tricks',
+            title: 'Optimisation Tips and Tricks',
             theme: 'theme-optimise',
             estimatedMinutes: 6,
             objective: 'Apply optimisation strategies across real professional services use cases.',
             whyItMatters: 'Every prompt you write costs money. This section cuts that cost by 40 to 70 percent with no loss in quality, on tasks you\'re already doing today. Most of these take less than a minute to apply.',
             content: {
-                eyebrow: 'Section 06: Optimization',
+                eyebrow: 'Section 06: Optimisation',
                 headline: 'The same output. Fewer tokens.',
                 standfirst: 'The gap between an average prompt and a good one isn\'t just quality. It\'s cost. Here\'s how to close both at once.',
                 paragraphs: [
@@ -335,7 +335,7 @@ const CONTENT = (function () {
                     },
                     {
                         title: 'Convert documents to Markdown before sending',
-                        body: 'PDF, DOCX, and HTML files carry hidden formatting weight: XML wrappers, style metadata, and structural tags all tokenize. Converting to plain Markdown strips this overhead before the API ever sees it. Microsoft\'s open-source markitdown tool (github.com/microsoft/markitdown) converts PDF, Word, PowerPoint, Excel, images, and web pages to clean Markdown in a single command. A 50-page DOCX converted to Markdown often drops 30–40% in token count with no loss of content.',
+                        body: 'PDF, DOCX, and HTML files carry hidden formatting weight: XML wrappers, style metadata, and structural tags all tokenise. Converting to plain Markdown strips this overhead before the API ever sees it. Microsoft\'s open-source markitdown tool (github.com/microsoft/markitdown) converts PDF, Word, PowerPoint, Excel, images, and web pages to clean Markdown in a single command. A 50-page DOCX converted to Markdown often drops 30–40% in token count with no loss of content.',
                         saving: '20–40% fewer input tokens on formatted documents'
                     },
                     {
@@ -345,7 +345,7 @@ const CONTENT = (function () {
                     },
                     {
                         title: 'Prefer structured formats for data inputs',
-                        body: 'When sending data to an AI model, format matters. A prose description of a dataset ("We have 12 clients, the first is Acme Corp with revenue of $4.2m and a contract renewal in March...") tokenizes far less efficiently than the same data as a Markdown table or JSON object. For any data-heavy task, convert to structured format first. The model reads it faster, the response is more accurate, and you pay less.',
+                        body: 'When sending data to an AI model, format matters. A prose description of a dataset ("We have 12 clients, the first is Acme Corp with revenue of $4.2m and a contract renewal in March...") tokenises far less efficiently than the same data as a Markdown table or JSON object. For any data-heavy task, convert to structured format first. The model reads it faster, the response is more accurate, and you pay less.',
                         saving: '25–45% fewer input tokens vs prose descriptions'
                     }
                 ],
@@ -381,7 +381,7 @@ const CONTENT = (function () {
                     'Model right-sizing: 70–90% cost reduction with minimal quality trade-off',
                     'Prompt caching: up to 90% off input costs for stable system prompts',
                     'Convert documents to Markdown before sending: markitdown strips 20–40% of input tokens',
-                    'Structured data (tables, JSON) tokenizes far more efficiently than prose descriptions'
+                    'Structured data (tables, JSON) tokenises far more efficiently than prose descriptions'
                 ]
             },
             interaction: 'promptSandbox',
@@ -491,11 +491,11 @@ const CONTENT = (function () {
             options: [
                 { id: 'a', text: 'The AI vendor charges a connection fee for each separate message sent' },
                 { id: 'b', text: 'Short prompts trigger a minimum charge regardless of actual usage' },
-                { id: 'c', text: 'The AI\'s lengthy responses generated significant output tokens — output costs 3–5× more than input', correct: true },
+                { id: 'c', text: 'The AI\'s lengthy responses generated significant output tokens, and output costs 3–5× more than input', correct: true },
                 { id: 'd', text: 'The AI misunderstood the short prompt and ran multiple attempts internally' }
             ],
             feedback: {
-                correct: 'Right. A short prompt doesn\'t mean a cheap request. Output tokens — what the AI writes back — cost 3–5× more than input tokens. A 3-word question that triggers a 2,000-word response will cost far more than a detailed prompt that produces a concise one.',
+                correct: 'Right. A short prompt doesn\'t mean a cheap request. Output tokens, what the AI writes back, cost 3–5× more than input tokens. A 3-word question that triggers a 2,000-word response will cost far more than a detailed prompt that produces a concise one.',
                 incorrect: 'The answer is output tokens. A 3-word prompt can trigger a very long response, and output tokens cost 3–5× more than input. A short question that produces a 2,000-word reply will cost far more than a structured prompt that produces a tight 100-word answer. See Section 2.'
             },
             tags: ['tokens', 'application']
@@ -553,15 +553,15 @@ const CONTENT = (function () {
             id: 'q5',
             type: 'scenario',
             section: 'consumption',
-            text: 'Your team runs a daily AI-assisted client briefing workflow. On Monday, each request costs $0.02. By Friday, the same questions cost $0.08 — four times as much. Usage patterns haven\'t changed. What is the most likely cause?',
+            text: 'Your team runs a daily AI-assisted client briefing workflow. On Monday, each request costs $0.02. By Friday, the same questions cost $0.08, four times as much. Usage patterns haven\'t changed. What is the most likely cause?',
             options: [
                 { id: 'a', text: 'The AI vendor applied a weekend surcharge starting Friday' },
-                { id: 'b', text: 'The conversation history has accumulated across the week — each request now re-processes all prior messages', correct: true },
+                { id: 'b', text: 'The conversation history has accumulated across the week, so each request now re-processes all prior messages', correct: true },
                 { id: 'c', text: 'The AI model selected a more powerful tier automatically as usage increased' },
                 { id: 'd', text: 'Output responses have grown longer as the AI learned team preferences' }
             ],
             feedback: {
-                correct: 'Exactly right. Every message in an ongoing conversation is re-sent with each new request. By Friday, each question is carrying the full week\'s conversation history — massively inflating input token volume. Starting a new conversation daily would eliminate this cost drift.',
+                correct: 'Exactly right. Every message in an ongoing conversation is re-sent with each new request. By Friday, each question is carrying the full week\'s conversation history, massively inflating input token volume. Starting a new conversation daily would eliminate this cost drift.',
                 incorrect: 'The cause is accumulated context. Every prior message in an ongoing conversation is re-sent with each new request. By day 5, a simple question carries the full week of history as context, multiplying the input token cost. Starting fresh each day is the fix. See Section 3.'
             },
             tags: ['consumption', 'application']
@@ -574,12 +574,12 @@ const CONTENT = (function () {
             options: [
                 { id: 'a', text: 'Cancel all AI tool access until a full cost-benefit analysis is completed' },
                 { id: 'b', text: 'Switch from a consumption model to a licence model to cap future spend' },
-                { id: 'c', text: 'Require every team to link AI spend to specific deliverables — connect cost to output, not just activity', correct: true },
+                { id: 'c', text: 'Require every team to link AI spend to specific deliverables, connect cost to output, not just activity', correct: true },
                 { id: 'd', text: 'Limit AI tool access to senior staff who can justify the investment' }
             ],
             feedback: {
                 correct: 'Correct. Spend without output accountability is the root cause. People consumed AI resources because nothing connected that spend to tangible results. Requiring teams to link spend to deliverables fixes the incentive, not just the symptom.',
-                incorrect: 'The root cause is no link between spend and output. Switching models or cancelling access treats the symptom. Connecting AI spend to specific deliverables changes the incentive structure — which is what actually caused the blowout. See Section 5.'
+                incorrect: 'The root cause is no link between spend and output. Switching models or cancelling access treats the symptom. Connecting AI spend to specific deliverables changes the incentive structure, which is what actually caused the blowout. See Section 5.'
             },
             tags: ['governance', 'judgement']
         },
@@ -604,16 +604,16 @@ const CONTENT = (function () {
             id: 'q8',
             type: 'judgement',
             section: 'licences',
-            text: 'A finance director is reviewing AI tools. One tool has strong user reviews and measurable productivity gains, but the monthly bill is unpredictable — it spikes whenever project load increases. What is the most appropriate recommendation?',
+            text: 'A finance director is reviewing AI tools. One tool has strong user reviews and measurable productivity gains, but the monthly bill is unpredictable and spikes whenever project load increases. What is the most appropriate recommendation?',
             options: [
-                { id: 'a', text: 'Cancel the tool — unpredictable costs are not acceptable in an enterprise environment' },
+                { id: 'a', text: 'Cancel the tool. Unpredictable costs are not acceptable in an enterprise environment' },
                 { id: 'b', text: 'Keep the consumption model but introduce spend alerts and monthly budget caps', correct: true },
                 { id: 'c', text: 'Switch to a licence model immediately, regardless of how the team uses the tool' },
-                { id: 'd', text: 'Do nothing — productivity gains justify any cost level' }
+                { id: 'd', text: 'Do nothing. Productivity gains justify any cost level' }
             ],
             feedback: {
-                correct: 'Right call. The tool is delivering value. The problem is visibility, not the model itself. Spend alerts and budget caps preserve the flexibility of consumption pricing while giving finance the control they need. A licence model may be appropriate later — but only once usage patterns are understood.',
-                incorrect: 'The tool is working — the issue is cost visibility, not the tool itself. Spend alerts and caps give finance control without abandoning a productive tool. Switching to a licence model without understanding usage patterns may cost more. Cancelling means losing documented productivity gains. See Section 4.'
+                correct: 'Right call. The tool is delivering value. The problem is visibility, not the model itself. Spend alerts and budget caps preserve the flexibility of consumption pricing while giving finance the control they need. A licence model may be appropriate later, but only once usage patterns are understood.',
+                incorrect: 'The tool is working. The issue is cost visibility, not the tool itself. Spend alerts and caps give finance control without abandoning a productive tool. Switching to a licence model without understanding usage patterns may cost more. Cancelling means losing documented productivity gains. See Section 4.'
             },
             tags: ['licences', 'judgement']
         },
@@ -658,11 +658,11 @@ const CONTENT = (function () {
     const advancedTips = [
         {
             title: 'Tell the AI exactly what format you want',
-            body: 'Instead of asking for a general response, specify the structure: "Return 3 bullet points — one finding, one risk, one recommended action." Structured output instructions produce shorter, more consistent responses and remove the back-and-forth of reformatting. Fewer tokens, better output.'
+            body: 'Instead of asking for a general response, specify the structure: "Return 3 bullet points, one finding, one risk, one recommended action." Structured output instructions produce shorter, more consistent responses and remove the back-and-forth of reformatting. Fewer tokens, better output.'
         },
         {
             title: 'Keep your standard instructions identical across requests',
-            body: 'If you use the same role, context, or rules in every prompt (e.g., "You are a senior analyst. Always respond in plain English. Avoid jargon."), put those instructions at the top and keep them word-for-word identical. AI tools that support caching — including Claude and GPT-4o — reuse processed versions of stable instructions, cutting that portion of your input cost by up to 90%.'
+            body: 'If you use the same role, context, or rules in every prompt (e.g., "You are a senior analyst. Always respond in plain English. Avoid jargon."), put those instructions at the top and keep them word-for-word identical. AI tools that support caching, including Claude and GPT-4o, reuse processed versions of stable instructions, cutting that portion of your input cost by up to 90%.'
         },
         {
             title: 'Ask for a cost estimate before sending a large request',
@@ -674,7 +674,7 @@ const CONTENT = (function () {
         },
         {
             title: 'Convert documents to plain text before sending',
-            body: 'PDFs and Word documents contain hidden formatting tokens — headers, styles, metadata — that add cost without adding meaning. Before attaching a document to an AI request, copy the relevant text into plain text. For teams processing documents regularly, ask IT whether your AI platform has a document conversion step built in. It typically reduces input token volume by 20–40%.'
+            body: 'PDFs and Word documents contain hidden formatting tokens, headers, styles, metadata, that add cost without adding meaning. Before attaching a document to an AI request, copy the relevant text into plain text. For teams processing documents regularly, ask IT whether your AI platform has a document conversion step built in. It typically reduces input token volume by 20–40%.'
         },
         {
             title: 'Reuse prompts across a team, not just yourself',
@@ -682,7 +682,7 @@ const CONTENT = (function () {
         },
         {
             title: 'Start a new conversation for each new task',
-            body: 'Continuing a long conversation for unrelated follow-up questions carries all prior context — even the parts that are no longer relevant. By the end of a working day, a single chat thread can accumulate thousands of tokens of history that inflate the cost of every new message. Start fresh when the topic changes. Your cost resets. Your context is cleaner.'
+            body: 'Continuing a long conversation for unrelated follow-up questions carries all prior context, even the parts that are no longer relevant. By the end of a working day, a single chat thread can accumulate thousands of tokens of history that inflate the cost of every new message. Start fresh when the topic changes. Your cost resets. Your context is cleaner.'
         }
     ];
 
@@ -699,7 +699,7 @@ const CONTENT = (function () {
                 { id: 'd', text: 'Choose the cheapest available AI model to minimise per-token costs' }
             ],
             feedback: {
-                correct: 'Right. The incentive structure is the lever. When people are measured on what they produce — not how much AI they consume — spend naturally aligns with value. Every major AI cost blowout has an incentive design problem at its core.',
+                correct: 'Right. The incentive structure is the lever. When people are measured on what they produce, not how much AI they consume, spend naturally aligns with value. Nearly every major AI cost blowout traces back to an incentive design problem.',
                 incorrect: 'The incentive structure is what matters most. Rewarding output quality rather than usage volume prevents the pattern where people consume AI resources without connecting spend to results. Vendor price and access restrictions are secondary. See Section 1.'
             },
             tcReward: 50
@@ -708,14 +708,14 @@ const CONTENT = (function () {
             id: 'q_tokens_1',
             text: 'You need to share a client report with an AI for analysis. The report is 200 pages. Which statement is most accurate before you send it?',
             options: [
-                { id: 'a', text: 'Length doesn\'t matter — AI tools process text at a flat rate regardless of volume' },
+                { id: 'a', text: 'Length doesn\'t matter. AI tools process text at a flat rate regardless of volume' },
                 { id: 'b', text: 'Only the pages you reference in your question will be processed, so 200 pages is fine' },
-                { id: 'c', text: 'A 200-page document is roughly 150,000–300,000 tokens — this may exceed some model limits and will drive significant input costs', correct: true },
+                { id: 'c', text: 'A 200-page document is roughly 150,000–300,000 tokens, which may exceed some model limits and will drive significant input costs', correct: true },
                 { id: 'd', text: 'The AI automatically compresses documents before processing, so the actual token count is much lower' }
             ],
             feedback: {
                 correct: 'Correct. At roughly 750 words per page, a 200-page document is around 150,000 tokens. That\'s the full input cost on every request that includes it. Extracting only the relevant sections before sending is one of the highest-impact cost reductions available.',
-                incorrect: 'A 200-page document is approximately 150,000–300,000 tokens — every page is processed in full. This is the input cost on every single request that includes the document. Sending only the relevant sections can reduce this by 80–90%. See Section 2.'
+                incorrect: 'A 200-page document is approximately 150,000–300,000 tokens, and every page is processed in full. This is the input cost on every single request that includes the document. Sending only the relevant sections can reduce this by 80–90%. See Section 2.'
             },
             tcReward: 50
         },
@@ -739,13 +739,13 @@ const CONTENT = (function () {
             text: 'Your team sends 50 AI requests daily, each including the same 2,000-word briefing document as context. Which change would reduce your monthly cost the most?',
             options: [
                 { id: 'a', text: 'Ask staff to write shorter follow-up questions to reduce output token volume' },
-                { id: 'b', text: 'Enable prompt caching — the briefing document is processed once and reused, cutting its input cost by up to 90%', correct: true },
+                { id: 'b', text: 'Enable prompt caching, so the briefing document is processed once and reused, cutting its input cost by up to 90%', correct: true },
                 { id: 'c', text: 'Reduce the team to 25 requests daily by batching questions together' },
                 { id: 'd', text: 'Switch to a smaller AI model for all requests' }
             ],
             feedback: {
-                correct: 'Right. When the same document is sent with every request, it is re-processed as input tokens every single time. Prompt caching stores the processed version so subsequent requests pay only for the new question — reducing that document\'s cost by up to 90% per request.',
-                incorrect: 'The biggest saving comes from not re-processing the same document 50 times a day. Prompt caching stores the processed briefing so only the new question is processed each time — up to 90% reduction on that input. Batching or smaller models help less. See Section 3.'
+                correct: 'Right. When the same document is sent with every request, it is re-processed as input tokens every single time. Prompt caching stores the processed version so subsequent requests pay only for the new question, reducing that document\'s cost by up to 90% per request.',
+                incorrect: 'The biggest saving comes from not re-processing the same document 50 times a day. Prompt caching stores the processed briefing so only the new question is processed each time, giving up to a 90% reduction on that input. Batching or smaller models help less. See Section 3.'
             },
             tcReward: 50
         },

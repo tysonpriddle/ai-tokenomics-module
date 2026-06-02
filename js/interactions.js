@@ -73,7 +73,7 @@ const INTERACTIONS = (function () {
                 label: 'Vague',
                 tag: 'Too short to be useful',
                 text: 'Summarise the report.',
-                note: 'Cheapest prompt — but the AI guesses everything: which report, what format, who the audience is. Expect a generic, unusable response.'
+                note: 'Cheapest prompt, but the AI guesses everything: which report, what format, who the audience is. Expect a generic, unusable response.'
             },
             {
                 label: 'Typical',
@@ -85,13 +85,13 @@ const INTERACTIONS = (function () {
                 label: 'Padded',
                 tag: 'Common expensive mistake',
                 text: 'I was wondering if you could perhaps help me out with something I\'ve been thinking about. I have a quarterly client report prepared by our finance team and I\'d really appreciate it if you could go through it and highlight the key financial metrics, the main risk factors, and anything else you feel is relevant to our upcoming partner briefing next week, which is quite an important meeting for us.',
-                note: 'Higher token cost — no extra value. That filler adds up across thousands of team requests, and the AI ignores most of it anyway.'
+                note: 'Higher token cost for no extra value. That filler adds up across thousands of team requests, and the AI ignores most of it anyway.'
             },
             {
                 label: 'Structured',
                 tag: 'Token-efficient',
-                text: 'Role: Financial analyst. Task: Review the Q3 client report. Output: 5 bullets — top metric, key risks, one recommendation. Audience: executive briefing.',
-                note: 'Fewer tokens than "Typical" and half the cost of "Padded" — yet the AI knows exactly what to produce. Role + Task + Output format is the trifecta.'
+                text: 'Role: Financial analyst. Task: Review the Q3 client report. Output: 5 bullets covering top metric, key risks, one recommendation. Audience: executive briefing.',
+                note: 'Fewer tokens than "Typical" and half the cost of "Padded", yet the AI knows exactly what to produce. Role + Task + Output format is the trifecta.'
             }
         ];
 
@@ -139,7 +139,7 @@ const INTERACTIONS = (function () {
                 pill.style.borderColor = 'var(--cyan)';
                 activePill = pill;
                 promptDisplay.textContent = ex.text;
-                promptNote.textContent = ex.tag + ' — ' + ex.note;
+                promptNote.textContent = ex.tag + ' · ' + ex.note;
                 updateCalculator(ex.text, resultsDiv);
             }
 

@@ -92,13 +92,13 @@ var GLOSSARY = [
     {
         terms: ['api', 'apis'],
         label: 'API',
-        definition: 'Application Programming Interface — a way for software to request a service from another system. When you use an AI tool, it sends requests to an API and you pay per token used.',
+        definition: 'Application Programming Interface. A way for software to request a service from another system. When you use an AI tool, it sends requests to an API and you pay per token used.',
         analogy: 'Like ordering from a restaurant: each order (request) has a separate cost based on what you ordered (tokens).'
     },
     {
         terms: ['context window'],
         label: 'Context window',
-        definition: 'The AI\'s working memory for a single request — everything it can see at once: your prompt, any attached documents, and the full conversation history.',
+        definition: 'The AI\'s working memory for a single request: everything it can see at once, including your prompt, any attached documents, and the full conversation history.',
         analogy: 'Like a whiteboard in a meeting. Only what\'s on the whiteboard gets considered. More on the whiteboard = higher cost.'
     },
     {
@@ -123,7 +123,7 @@ var GLOSSARY = [
         terms: ['model tier', 'model tiers'],
         label: 'Model tier',
         definition: 'Different versions of an AI model with different capabilities and prices. A flagship model (e.g. GPT-4o) can cost 10–50× more per token than a cost-optimised version (e.g. GPT-4o Mini).',
-        analogy: 'Like business vs economy class — the same destination, different cost.'
+        analogy: 'Like business vs economy class. Same destination, different cost.'
     },
     {
         terms: ['llm', 'llms', 'large language model'],
@@ -163,44 +163,58 @@ function buildTooltipSpan(text, entry) {
     return span;
 }
 
-// Wrap first occurrence of each glossary term in a paragraph element
+// Wrap the first occurrence of each glossary concept in a paragraph element.
+// Handles overlapping terms (e.g. "input tokens" vs "tokens") by preferring the
+// longest match and never wrapping the same span twice.
 function applyTooltips(pEl) {
     var original = pEl.textContent;
     if (!original) return;
 
     var lower = original.toLowerCase();
-    var fragments = []; // array of {text, entry|null}
-    var remaining = original;
-    var usedTerms = {};
 
+    // Collect first-occurrence candidate matches across all terms
+    var candidates = [];
     GLOSSARY.forEach(function (entry) {
         entry.terms.forEach(function (term) {
-            if (usedTerms[term]) return;
             var idx = lower.indexOf(term);
             if (idx === -1) return;
-            // Ensure word boundary (not mid-word)
+            // Whole-word boundary check (don't match mid-word)
             var before = idx > 0 ? lower[idx - 1] : ' ';
             var after = idx + term.length < lower.length ? lower[idx + term.length] : ' ';
             if (/[a-z0-9]/.test(before) || /[a-z0-9]/.test(after)) return;
-            usedTerms[term] = { idx: idx, entry: entry, term: term };
+            candidates.push({ idx: idx, len: term.length, entry: entry });
         });
     });
+    if (!candidates.length) return;
 
-    // Sort by position
-    var sorted = Object.values(usedTerms).sort(function (a, b) { return a.idx - b.idx; });
-    if (sorted.length === 0) return;
+    // Earliest first; at the same position, longest first so "input tokens" wins over "tokens"
+    candidates.sort(function (a, b) {
+        if (a.idx !== b.idx) return a.idx - b.idx;
+        return b.len - a.len;
+    });
+
+    // Accept only non-overlapping matches, at most one per concept (entry)
+    var accepted = [];
+    var usedEntries = {};
+    var cursor = 0;
+    candidates.forEach(function (c) {
+        if (c.idx < cursor) return;             // overlaps an already-accepted match
+        if (usedEntries[c.entry.label]) return; // concept already tooltipped in this paragraph
+        accepted.push(c);
+        usedEntries[c.entry.label] = true;
+        cursor = c.idx + c.len;
+    });
+    if (!accepted.length) return;
 
     // Rebuild the element with tooltip spans
     pEl.textContent = '';
     var pos = 0;
-    sorted.forEach(function (match) {
-        if (match.idx > pos) {
-            pEl.appendChild(document.createTextNode(original.slice(pos, match.idx)));
+    accepted.forEach(function (m) {
+        if (m.idx > pos) {
+            pEl.appendChild(document.createTextNode(original.slice(pos, m.idx)));
         }
-        var matched = original.slice(match.idx, match.idx + match.term.length);
-        pEl.appendChild(buildTooltipSpan(matched, match.entry));
-        pos = match.idx + match.term.length;
-        lower = lower.slice(0, match.idx) + ' '.repeat(match.term.length) + lower.slice(match.idx + match.term.length);
+        pEl.appendChild(buildTooltipSpan(original.slice(m.idx, m.idx + m.len), m.entry));
+        pos = m.idx + m.len;
     });
     if (pos < original.length) {
         pEl.appendChild(document.createTextNode(original.slice(pos)));
@@ -318,7 +332,7 @@ function buildShell() {
         if (typeof SOUND === 'undefined') return;
         var nowMuted = SOUND.toggleMute();
         muteBtn.textContent = nowMuted ? '🔇' : '🔊';
-        muteBtn.title = nowMuted ? 'Sound off — click to enable' : 'Sound on — click to mute';
+        muteBtn.title = nowMuted ? 'Sound off. Click to enable' : 'Sound on. Click to mute';
         if (!nowMuted) SOUND.play('click');
     };
     right.appendChild(muteBtn);
@@ -1295,7 +1309,7 @@ function renderAssessment(wrap) {
     var metaSubtitle = document.createElement('p');
     metaSubtitle.style.cssText = 'font-size:0.85rem;color:var(--text-3);max-width:none;margin-top:4px;';
     var attemptNum = STATE.assessmentAttempts + 1;
-    var attemptLabel = 'Attempt ' + attemptNum + ' of 3' + (attemptNum === 3 ? ' — Final attempt' : '');
+    var attemptLabel = 'Attempt ' + attemptNum + ' of 3' + (attemptNum === 3 ? ' · Final attempt' : '');
     metaSubtitle.textContent = attemptLabel + ' · Pass mark: 80% (' + Math.ceil(questions.length * 0.8) + '/' + questions.length + ' correct)';
     metaDiv.appendChild(metaTitle);
     metaDiv.appendChild(metaSubtitle);
@@ -1874,9 +1888,9 @@ function buildTokenizationSVG() {
     var wrap = document.createElement('div');
     wrap.className = 'svg-infographic';
     wrap.setAttribute('role', 'img');
-    wrap.setAttribute('aria-label', 'Diagram: Tokenization in action. The phrase "The quarterly results" is broken into coloured chunks showing each token boundary. Demonstrates that a single sentence becomes 8 to 12 tokens, not 4 words.');
+    wrap.setAttribute('aria-label', 'Diagram: Tokenisation in action. The phrase "The quarterly results" is broken into coloured chunks showing each token boundary. Demonstrates that a single sentence becomes 8 to 12 tokens, not 4 words.');
     wrap.innerHTML = [
-        '<div class="svg-infographic-label" aria-hidden="true">TOKENIZATION IN ACTION</div>',
+        '<div class="svg-infographic-label" aria-hidden="true">TOKENISATION IN ACTION</div>',
         '<svg viewBox="0 0 480 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
         '  <rect width="480" height="140" fill="none"/>',
         '  <!-- Input phrase -->',
