@@ -45,7 +45,7 @@
     font-family: var(--font-display);
     font-size: 28vw;
     font-weight: 900;
-    color: rgba(245,158,11,0.08);
+    color: rgba(245,158,11,0.04);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -214,7 +214,7 @@
     font-family: var(--font-mono);
     font-size: 10rem;
     font-weight: 700;
-    color: rgba(6,182,212,0.08);
+    color: rgba(6,182,212,0.04);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -299,7 +299,7 @@
     font-family: var(--font-display);
     font-size: 14rem;
     font-weight: 700;
-    color: rgba(245,158,11,0.08);
+    color: rgba(245,158,11,0.04);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -471,7 +471,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 12rem;
-    color: rgba(245,158,11,0.08);
+    color: rgba(245,158,11,0.05);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -489,7 +489,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 12rem;
-    color: rgba(6,182,212,0.08);
+    color: rgba(6,182,212,0.05);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -648,7 +648,7 @@
     top: 50%;
     transform: translateY(-50%);
     font-size: 12rem;
-    color: rgba(6,182,212,0.08);
+    color: rgba(6,182,212,0.05);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -1257,8 +1257,8 @@
     --surface-2:   #F2EDE3;
     --surface-3:   #E8E0D2;
     --surface-4:   #DDD4C4;
-    --border:      rgba(0, 0, 0, 0.14);
-    --border-2:    rgba(0, 0, 0, 0.10);
+    --border:      rgba(0, 0, 0, 0.10);
+    --border-2:    rgba(0, 0, 0, 0.06);
 
     --amber:       #B45309;
     --amber-light: #D97706;
@@ -1319,42 +1319,20 @@
     color: rgba(180,83,9,0.05);
 }
 
-/* Section hero backgrounds in light mode — each keeps its dark-mode accent personality
-   via a subtle tinted wash, rather than collapsing to one flat cream gradient. */
-[data-theme="light"] .tokens-hero {
-    background: linear-gradient(135deg, #EDE5D5 0%, #F5F0E8 45%, rgba(3,105,161,0.06) 100%);
-}
-[data-theme="light"] .consumption-hero {
-    background: linear-gradient(135deg, rgba(180,83,9,0.06) 0%, #F5F0E8 50%, #EDE5D5 100%);
-}
-[data-theme="light"] .licences-hero {
+/* Override other dark-locked section hero backgrounds */
+[data-theme="light"] .tokens-hero,
+[data-theme="light"] .consumption-hero,
+[data-theme="light"] .licences-hero,
+[data-theme="light"] .governance-hero,
+[data-theme="light"] .optimise-hero,
+[data-theme="light"] .vendors-hero {
     background: linear-gradient(135deg, #EDE5D5 0%, #F5F0E8 50%, #EDE5D5 100%);
 }
-[data-theme="light"] .governance-hero {
-    background: linear-gradient(135deg, rgba(180,83,9,0.07) 0%, #F5F0E8 55%, #EDE5D5 100%);
-}
-[data-theme="light"] .optimise-hero {
-    background: linear-gradient(135deg, #EDE5D5 0%, #F5F0E8 45%, rgba(21,128,61,0.06) 100%);
-}
-[data-theme="light"] .vendors-hero {
-    background: linear-gradient(135deg, rgba(3,105,161,0.06) 0%, #F5F0E8 50%, #EDE5D5 100%);
-}
 
-/* Governance terminal stays a deliberate dark "device" embedded in the cream page */
-[data-theme="light"] .governance-terminal {
-    border: 1px solid rgba(0,0,0,0.14);
-    box-shadow: 0 10px 36px rgba(0,0,0,0.20);
-}
-
-/* Cards — softer, lifted shadows tuned for the cream page */
+/* Cards */
 [data-theme="light"] .card {
     background: var(--surface);
     border-color: var(--border);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 14px rgba(0,0,0,0.06);
-}
-
-[data-theme="light"] .card:hover {
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08), 0 0 0 1px rgba(180,83,9,0.12);
 }
 
 [data-theme="light"] .card-amber {
@@ -1371,11 +1349,6 @@
 [data-theme="light"] .news-card {
     background: var(--surface);
     border-color: var(--border);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05), 0 8px 24px rgba(0,0,0,0.07);
-}
-
-[data-theme="light"] .news-card:hover {
-    box-shadow: 0 10px 28px rgba(0,0,0,0.10);
 }
 
 [data-theme="light"] .news-card-lesson {

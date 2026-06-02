@@ -215,16 +215,7 @@ const GAME = (function () {
         const def = BADGE_DEF[badgeId];
         if (!def) return;
 
-        // Don't interrupt the graded assessment with a full-screen modal.
-        // Award silently with a toast; the badge still appears on the certificate.
-        var inAssessment = (typeof STATE.currentSection === 'number') &&
-                           CONTENT.sections[STATE.currentSection] &&
-                           CONTENT.sections[STATE.currentSection].isAssessment;
-        if (inAssessment) {
-            showToast('Badge earned: ' + def.name, 'amber');
-        } else {
-            showBadgeOverlay(def);
-        }
+        showBadgeOverlay(def);
         xAPI.badgeEarned(def.name);
 
         // Update badge display if visible
@@ -284,9 +275,9 @@ const GAME = (function () {
         if (!overlay) return;
 
         overlay.innerHTML = `
-            <div class="overlay-card" id="badge-overlay-card" style="animation: badgeReveal 0.6s cubic-bezier(0.34,1.56,0.64,1) both;">
+            <div class="overlay-card" id="badge-overlay-card">
                 <div id="burst-container" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
-                <span class="overlay-icon" style="animation: tokenPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.25s both;">${def.icon}</span>
+                <span class="overlay-icon">${def.icon}</span>
                 <div class="overlay-title">Badge Unlocked!</div>
                 <div class="label label-amber" style="margin-bottom:8px;letter-spacing:0.1em;">${def.name.toUpperCase()}</div>
                 <p class="overlay-subtitle">${def.desc}</p>
@@ -294,15 +285,10 @@ const GAME = (function () {
             </div>`;
 
         overlay.classList.remove('hidden');
-        overlay.style.animation = 'fadeIn 0.25s ease both';
+        overlay.style.animation = 'fadeIn 0.2s ease both';
 
-        // Particle burst — slight delay so it bursts as the card lands
-        var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!reduced) {
-            setTimeout(function () {
-                _spawnParticles(document.getElementById('burst-container'), 24);
-            }, 200);
-        }
+        // Particle burst
+        _spawnParticles(document.getElementById('burst-container'), 20);
     }
 
     function showTierUpOverlay(tier) {
@@ -310,24 +296,15 @@ const GAME = (function () {
         if (!overlay) return;
 
         overlay.innerHTML = `
-            <div class="overlay-card" id="tierup-overlay-card" style="animation: badgeReveal 0.6s cubic-bezier(0.34,1.56,0.64,1) both;">
-                <span class="overlay-icon" style="font-size:4rem;animation: tokenPop 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;">${tier.icon}</span>
+            <div class="overlay-card" style="animation:tierGlow 1.5s ease infinite;">
+                <span class="overlay-icon" style="font-size:4rem;">${tier.icon}</span>
                 <div class="overlay-title" style="font-size:2rem;">Tier Up!</div>
-                <div class="label label-amber" style="font-size:0.9rem;letter-spacing:0.12em;margin-bottom:8px;display:inline-block;animation: tierUpSweep 0.6s cubic-bezier(0.16,1,0.3,1) 0.35s both;">${tier.name.toUpperCase()}</div>
+                <div class="label label-amber" style="font-size:0.9rem;letter-spacing:0.12em;margin-bottom:8px;">${tier.name.toUpperCase()}</div>
                 <p class="overlay-subtitle" style="margin-bottom:24px;">Your Token Credit balance has unlocked a new tier.</p>
                 <button class="btn btn-primary btn-lg" onclick="closeOverlay()">Keep Going</button>
             </div>`;
 
         overlay.classList.remove('hidden');
-        overlay.style.animation = 'fadeIn 0.25s ease both';
-
-        // Settle into the ambient glow once the reveal finishes
-        var card = document.getElementById('tierup-overlay-card');
-        if (card) {
-            setTimeout(function () {
-                card.style.animation = 'tierGlow 1.5s ease infinite';
-            }, 700);
-        }
     }
 
     function _spawnParticles(container, count) {

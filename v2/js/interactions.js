@@ -466,7 +466,7 @@ const INTERACTIONS = (function () {
 
     function scoreSandbox(example, userText, scoreDiv, section6Errors) {
         if (!userText || userText.trim().length < 10) {
-            GAME.showToast('Write your optimised prompt before scoring.', 'red');
+            GAME.showToast('Write your optimized prompt before scoring.', 'red');
             return;
         }
 
@@ -475,7 +475,7 @@ const INTERACTIONS = (function () {
         const reduction    = Math.round(((beforeTokens - userTokens) / beforeTokens) * 100);
 
         const hasRole   = /you are|act as|as a|as an/i.test(userText);
-        const hasTask   = /summaris|summariz|analys|analyz|identify|list|write|compare|extract|review/i.test(userText);
+        const hasTask   = /summarise|analyze|identify|list|write|compare|extract|review/i.test(userText);
         const hasFormat = /bullet|table|paragraph|words|sentence|format|structure/i.test(userText);
 
         const structureScore = (hasRole ? 33 : 0) + (hasTask ? 33 : 0) + (hasFormat ? 34 : 0);
@@ -500,7 +500,7 @@ const INTERACTIONS = (function () {
         const scoreSummary = document.createElement('div');
         const scoreGrade = document.createElement('div');
         scoreGrade.style.cssText = 'font-weight:700;font-size:1.1rem;color:var(--text);margin-bottom:4px;';
-        scoreGrade.textContent = overall >= 80 ? 'Excellent optimisation!' : overall >= 60 ? 'Good work. Room to improve.' : 'Needs work.';
+        scoreGrade.textContent = overall >= 80 ? 'Excellent optimization!' : overall >= 60 ? 'Good work. Room to improve.' : 'Needs work.';
         const scoreReduction = document.createElement('div');
         scoreReduction.style.cssText = 'font-family:var(--font-mono);font-size:0.75rem;color:var(--text-3);';
         scoreReduction.textContent = `Token reduction: ${reduction}% (${beforeTokens} → ${userTokens} tokens)`;
@@ -533,7 +533,7 @@ const INTERACTIONS = (function () {
         scoreDiv.appendChild(resultCard);
 
         if (overall >= 60) {
-            GAME.awardTC(30, 'prompt optimisation');
+            GAME.awardTC(30, 'prompt optimization');
             GAME.completeOptionalActivity('promptSandbox');
         }
         if (section6Errors === 0 && !STATE.badges.pennyPincher) {

@@ -288,16 +288,16 @@ const CONTENT = (function () {
             title: 'Optimization Tips and Tricks',
             theme: 'theme-optimise',
             estimatedMinutes: 6,
-            objective: 'Apply optimisation strategies across real professional services use cases.',
+            objective: 'Apply optimization strategies across real professional services use cases.',
             whyItMatters: 'Every prompt you write costs money. This section cuts that cost by 40 to 70 percent with no loss in quality, on tasks you\'re already doing today. Most of these take less than a minute to apply.',
             content: {
                 eyebrow: 'Section 06: Optimization',
                 headline: 'The same output. Fewer tokens.',
                 standfirst: 'The gap between an average prompt and a good one isn\'t just quality. It\'s cost. Here\'s how to close both at once.',
                 paragraphs: [
-                    'The gap between an unoptimised prompt and an efficient one is often 40–70% in token count, without any loss in output quality. For a team generating thousands of AI requests per day, that gap is significant.',
+                    'The gap between an unoptimized prompt and an efficient one is often 40–70% in token count, without any loss in output quality. For a team generating thousands of AI requests per day, that gap is significant.',
                     'The foundation of token-efficient prompting is specificity. Vague prompts produce verbose responses. A prompt that specifies role, task, constraints, and output format will consistently outperform a prompt that relies on the model to infer any of those elements.',
-                    'Context hygiene is the second major lever. Most AI chat tools append prior conversation history to every new request. In a long session, this context can dwarf the actual question in token volume. Starting a new session for a new task, rather than continuing an existing chat, is one of the simplest and most underused optimisations.',
+                    'Context hygiene is the second major lever. Most AI chat tools append prior conversation history to every new request. In a long session, this context can dwarf the actual question in token volume. Starting a new session for a new task, rather than continuing an existing chat, is one of the simplest and most underused optimizations.',
                     'Model selection is the most impactful single decision. A task that can be completed by a smaller model (GPT-4o Mini, Claude Haiku, Gemini Flash) at 95% of the quality of the flagship model at 10% of the cost is not a compromise. It\'s a correct engineering decision.',
                     'For repeating use cases (daily report templates, standard client email formats, recurring document reviews), structured prompts with caching-compatible system prompts can reduce costs dramatically. The system prompt is tokenised once and cached; subsequent requests pay only for the variable input.',
                     'Document review is a particularly common professional services use case. Rather than sending the full document on every query, extract only the relevant sections. A 200-page report contains perhaps 10 pages relevant to any given question. Sending 10 pages instead of 200 is a 95% reduction in context tokens for that request.'
@@ -340,7 +340,7 @@ const CONTENT = (function () {
                     },
                     {
                         title: 'Build a model routing habit',
-                        body: 'Most daily AI usage mixes task types that warrant different model tiers. A practical routing rule: use frontier models (GPT-4o, Claude Sonnet) only for drafting, complex reasoning, and synthesis. Use mid-tier models (GPT-4o Mini, Claude Haiku, Gemini Flash) for summarisation, Q&A, extraction, and classification. The quality difference on routine tasks is minimal. The cost difference is not.',
+                        body: 'Most daily AI usage mixes task types that warrant different model tiers. A practical routing rule: use frontier models (GPT-4o, Claude Sonnet) only for drafting, complex reasoning, and synthesis. Use mid-tier models (GPT-4o Mini, Claude Haiku, Gemini Flash) for summarization, Q&A, extraction, and classification. The quality difference on routine tasks is minimal. The cost difference is not.',
                         saving: '70–90% cost reduction on routed routine tasks'
                     },
                     {
@@ -454,7 +454,7 @@ const CONTENT = (function () {
                     { id: 'ms1',   text: 'Primarily bundled with M365 E3/E5 enterprise licences',           vendor: 'microsoft' },
                     { id: 'ms2',   text: 'Best fit for organisations already deep in the Microsoft 365 ecosystem', vendor: 'microsoft' },
                     { id: 'oai1',  text: 'Pay-per-token API; Enterprise tier available at negotiated per-seat pricing', vendor: 'openai' },
-                    { id: 'oai2',  text: 'Widest model range, from cost-optimised to frontier reasoning models', vendor: 'openai' },
+                    { id: 'oai2',  text: 'Widest model range, from cost-optimized to frontier reasoning models', vendor: 'openai' },
                     { id: 'ant1',  text: 'Known for the largest context windows (up to 200K) and built-in prompt caching', vendor: 'anthropic' },
                     { id: 'ant2',  text: 'Strong on long-document reasoning; research-grade safety approach', vendor: 'anthropic' },
                     { id: 'goog1', text: 'Deepest integration with Google Workspace; Gemini for Workspace per-seat model', vendor: 'google' },
@@ -512,7 +512,7 @@ const CONTENT = (function () {
                 { id: 'd', text: 'Storage costs: document retention is billed separately' }
             ],
             feedback: {
-                correct: 'Correct. A 50-page document is enormous in token terms, potentially 40,000–80,000 tokens. Sending it daily means re-paying that input cost every time. Context management is a key optimisation opportunity.',
+                correct: 'Correct. A 50-page document is enormous in token terms, potentially 40,000–80,000 tokens. Sending it daily means re-paying that input cost every time. Context management is a key optimization opportunity.',
                 incorrect: 'The main driver here is input tokens. The 50-page document must be tokenised and processed on every request. That document alone could represent 40,000–80,000 input tokens per day. See Sections 2 and 6.'
             },
             tags: ['consumption', 'governance']
@@ -536,7 +536,7 @@ const CONTENT = (function () {
             id: 'q4',
             type: 'scenario',
             section: 'optimise',
-            text: 'Your colleague needs to summarise a client\'s 80-page market entry report. Which approach is most token-efficient while maintaining output quality?',
+            text: 'Your colleague needs to summarize a client\'s 80-page market entry report. Which approach is most token-efficient while maintaining output quality?',
             options: [
                 { id: 'a', text: 'Paste the full 80-page document and ask: "Summarise this"' },
                 { id: 'b', text: 'Extract the executive summary and recommendations (8 pages), then ask: "Summarise in 5 bullet points covering finding, recommendation, and top risk"', correct: true },
@@ -592,7 +592,7 @@ const CONTENT = (function () {
                 { id: 'a', text: 'Number of input tokens in the prompt' },
                 { id: 'b', text: 'Number of output tokens in the response' },
                 { id: 'c', text: 'The seniority level of the person making the request', correct: true },
-                { id: 'd', text: 'The AI model tier selected (e.g. flagship vs cost-optimised)' }
+                { id: 'd', text: 'The AI model tier selected (e.g. flagship vs cost-optimized)' }
             ],
             feedback: {
                 correct: 'Correct. AI APIs charge based on token volume, model tier, and sometimes frequency. Not on who is making the request. A graduate and a partner pay the same token rate. That\'s why governance can\'t rely on user seniority as a proxy for appropriate usage.',
@@ -774,7 +774,7 @@ const CONTENT = (function () {
                 { id: 'd', text: 'Requesting weekly usage reports from the AI vendor' }
             ],
             feedback: {
-                correct: 'Correct. Model tier access control is the fastest lever. Preventing junior staff from accessing flagship models when a cost-optimised tier performs adequately for their tasks directly cuts the per-token rate across a large user base.',
+                correct: 'Correct. Model tier access control is the fastest lever. Preventing junior staff from accessing flagship models when a cost-optimized tier performs adequately for their tasks directly cuts the per-token rate across a large user base.',
                 incorrect: 'Model tier access control has the highest immediate impact. Restricting access to expensive flagship models for users who don\'t need them cuts the per-token rate across your entire user base immediately. Policies and training change behaviour slowly; access controls change costs overnight.'
             },
             tcReward: 50

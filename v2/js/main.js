@@ -436,34 +436,6 @@ function renderSection(section, container) {
         });
         initScrollUnlock(wrap);
     }
-
-    // Reveal infographics (draw-on charts) when they scroll into view
-    initChartReveals(wrap);
-}
-
-// ---- Chart reveal on scroll ----
-
-function initChartReveals(wrap) {
-    var charts = wrap.querySelectorAll('.svg-infographic');
-    if (!charts.length) return;
-
-    // Reduced-motion: reveal immediately, skip the draw animation
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || !('IntersectionObserver' in window)) {
-        charts.forEach(function (c) { c.classList.add('is-visible'); });
-        return;
-    }
-
-    var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.35 });
-
-    charts.forEach(function (c) { observer.observe(c); });
 }
 
 // ---- INTRO ----
@@ -1601,7 +1573,7 @@ function renderCertificate(wrap, score, total) {
 
     var certCred = document.createElement('div');
     certCred.className = 'certificate-credential';
-    certCred.textContent = 'Has demonstrated proficiency in understanding, monitoring, and optimising AI token consumption costs.';
+    certCred.textContent = 'Has demonstrated proficiency in understanding, monitoring, and optimizing AI token consumption costs.';
     cert.appendChild(certCred);
 
     // Divider
@@ -1618,12 +1590,12 @@ function renderCertificate(wrap, score, total) {
 
     [
         { label: 'Score', value: Math.round((score/total)*100) + '%' },
-        { label: 'Tier', value: tierName, small: true },
+        { label: 'Tier', value: tierName.split(' ')[0] },
         { label: 'TC', value: STATE.tc.toLocaleString() },
         { label: 'Badges', value: Object.keys(STATE.badges).length + '/12' }
     ].forEach(function (item) {
         var metaItem = document.createElement('div');
-        metaItem.className = 'certificate-meta-item' + (item.small ? ' certificate-meta-item-sm' : '');
+        metaItem.className = 'certificate-meta-item';
         var itemVal = document.createElement('span');
         itemVal.textContent = item.value;
         var itemLabel = document.createTextNode(item.label);
@@ -1834,8 +1806,8 @@ function buildCostExplosionSVG() {
         '  <line x1="60" y1="65" x2="450" y2="65" style="stroke: var(--border)" stroke-width="1"/>',
         '  <line x1="60" y1="30" x2="450" y2="30" style="stroke: var(--border)" stroke-width="1"/>',
         '  <!-- Budget line -->',
-        '  <line x1="60" y1="115" x2="450" y2="115" style="stroke: var(--red); opacity: 0.6" stroke-width="1.5" stroke-dasharray="6,4"/>',
-        '  <text x="453" y="119" style="fill: var(--red)" font-size="8" font-family="monospace">BUDGET</text>',
+        '  <line x1="60" y1="115" x2="450" y2="115" stroke="rgba(239,68,68,0.45)" stroke-width="1.5" stroke-dasharray="6,4"/>',
+        '  <text x="453" y="119" fill="rgba(239,68,68,0.7)" font-size="8" font-family="monospace">BUDGET</text>',
         '  <!-- Area fill -->',
         '  <defs>',
         '    <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">',
@@ -1844,26 +1816,25 @@ function buildCostExplosionSVG() {
         '    </linearGradient>',
         '  </defs>',
         '  <polygon points="80,165 150,157 220,147 290,128 350,100 400,64 435,28 435,170 80,170" fill="url(#lineGrad)"/>',
-        '  <!-- Glow (behind line) -->',
-        '  <polyline class="cost-line-glow" points="80,165 150,157 220,147 290,128 350,100 400,64 435,28" fill="none" style="stroke: var(--amber)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.12" pathLength="1"/>',
-        '  <!-- Cost line (animated draw-on) -->',
-        '  <polyline class="cost-line" points="80,165 150,157 220,147 290,128 350,100 400,64 435,28" fill="none" style="stroke: var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1"/>',
+        '  <!-- Cost line -->',
+        '  <polyline points="80,165 150,157 220,147 290,128 350,100 400,64 435,28" fill="none" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>',
+        '  <!-- Glow -->',
+        '  <polyline points="80,165 150,157 220,147 290,128 350,100 400,64 435,28" fill="none" stroke="#f5a623" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.1"/>',
         '  <!-- Terminal data point -->',
-        '  <circle class="cost-line-dot" cx="435" cy="28" r="5" style="fill: var(--amber)"/>',
-        '  <circle class="cost-line-dot" cx="435" cy="28" r="11" style="fill: var(--amber)" opacity="0.18"/>',
+        '  <circle cx="435" cy="28" r="5" fill="#f5a623"/>',
+        '  <circle cx="435" cy="28" r="11" fill="#f5a623" opacity="0.18"/>',
         '  <!-- Budget-exceeded zone label -->',
-        '  <rect x="340" y="118" width="96" height="42" rx="3" style="fill: var(--red); opacity: 0.1"/>',
-        '  <rect x="340" y="118" width="96" height="42" rx="3" fill="none" style="stroke: var(--red); opacity: 0.3" stroke-width="1"/>',
-        '  <text x="388" y="133" style="fill: var(--red)" font-size="8" font-family="monospace" text-anchor="middle" font-weight="bold">BUDGET</text>',
-        '  <text x="388" y="145" style="fill: var(--red)" font-size="8" font-family="monospace" text-anchor="middle" font-weight="bold">EXCEEDED</text>',
-        '  <text x="388" y="155" style="fill: var(--red); opacity: 0.75" font-size="7" font-family="monospace" text-anchor="middle">8 months early</text>',
+        '  <rect x="340" y="118" width="96" height="42" rx="3" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.2)" stroke-width="1"/>',
+        '  <text x="388" y="133" fill="rgba(239,68,68,0.8)" font-size="8" font-family="monospace" text-anchor="middle">BUDGET</text>',
+        '  <text x="388" y="145" fill="rgba(239,68,68,0.8)" font-size="8" font-family="monospace" text-anchor="middle">EXCEEDED</text>',
+        '  <text x="388" y="155" fill="rgba(239,68,68,0.5)" font-size="7" font-family="monospace" text-anchor="middle">8 months early</text>',
         '  <!-- Month labels -->',
         '  <text x="77" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">JAN</text>',
         '  <text x="217" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">FEB</text>',
         '  <text x="347" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">MAR</text>',
         '  <text x="427" y="190" style="fill: var(--text-3)" font-size="9" font-family="monospace">APR</text>',
         '  <!-- Final stat -->',
-        '  <text x="18" y="28" style="fill: var(--amber)" font-size="14" font-family="monospace" font-weight="bold">$3.4B</text>',
+        '  <text x="18" y="28" fill="#f5a623" font-size="14" font-family="monospace" font-weight="bold">$3.4B</text>',
         '  <text x="18" y="42" style="fill: var(--text-3)" font-size="8" font-family="monospace">gone in 4 months</text>',
         '</svg>'
     ].join('\n');
@@ -1930,13 +1901,13 @@ function buildUsageAnomalySVG() {
         '  <line x1="60" y1="90" x2="440" y2="90" style="stroke: var(--border)" stroke-width="1"/>',
         '  <line x1="60" y1="60" x2="440" y2="60" style="stroke: var(--border)" stroke-width="1"/>',
         '  <!-- Team average line -->',
-        '  <line x1="60" y1="130" x2="440" y2="130" style="stroke: var(--cyan); opacity: 0.55" stroke-width="1.5" stroke-dasharray="5,3"/>',
-        '  <text x="444" y="134" style="fill: var(--cyan)" font-size="8" font-family="monospace">AVG</text>',
+        '  <line x1="60" y1="130" x2="440" y2="130" stroke="rgba(6,182,212,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>',
+        '  <text x="444" y="134" fill="rgba(6,182,212,0.6)" font-size="8" font-family="monospace">AVG</text>',
         '  <!-- Normal bars (cyan) -->',
-        '  <rect x="80" y="120" width="42" height="30" rx="3" style="fill: var(--cyan); opacity: 0.3"/>',
-        '  <rect x="148" y="115" width="42" height="35" rx="3" style="fill: var(--cyan); opacity: 0.3"/>',
-        '  <rect x="286" y="122" width="42" height="28" rx="3" style="fill: var(--cyan); opacity: 0.3"/>',
-        '  <rect x="354" y="117" width="42" height="33" rx="3" style="fill: var(--cyan); opacity: 0.3"/>',
+        '  <rect x="80" y="120" width="42" height="30" rx="3" fill="rgba(6,182,212,0.25)" stroke="rgba(6,182,212,0.4)" stroke-width="1"/>',
+        '  <rect x="148" y="115" width="42" height="35" rx="3" fill="rgba(6,182,212,0.25)" stroke="rgba(6,182,212,0.4)" stroke-width="1"/>',
+        '  <rect x="286" y="122" width="42" height="28" rx="3" fill="rgba(6,182,212,0.25)" stroke="rgba(6,182,212,0.4)" stroke-width="1"/>',
+        '  <rect x="354" y="117" width="42" height="33" rx="3" fill="rgba(6,182,212,0.25)" stroke="rgba(6,182,212,0.4)" stroke-width="1"/>',
         '  <!-- Anomalous bar (amber -> red gradient, very tall) -->',
         '  <defs>',
         '    <linearGradient id="anomGrad" x1="0" y1="0" x2="0" y2="1">',
@@ -1946,20 +1917,18 @@ function buildUsageAnomalySVG() {
         '  </defs>',
         '  <rect x="217" y="20" width="42" height="130" rx="3" fill="url(#anomGrad)"/>',
         '  <!-- Pulse ring on anomalous bar -->',
-        '  <circle class="anomaly-pulse" cx="238" cy="14" r="11" style="fill: var(--red); opacity: 0.25"/>',
-        '  <circle cx="238" cy="14" r="11" fill="none" style="stroke: var(--red)" stroke-width="1.5"/>',
-        '  <text x="238" y="19" fill="#fff" font-size="13" font-family="sans-serif" text-anchor="middle" font-weight="bold">!</text>',
+        '  <circle cx="238" cy="14" r="11" fill="rgba(239,68,68,0.2)" stroke="rgba(239,68,68,0.7)" stroke-width="1.5"/>',
+        '  <text x="238" y="19" fill="white" font-size="13" font-family="sans-serif" text-anchor="middle" font-weight="bold">!</text>',
         '  <!-- Annotation callout -->',
-        '  <rect x="268" y="22" width="120" height="46" rx="4" style="fill: var(--red); opacity: 0.1"/>',
-        '  <rect x="268" y="22" width="120" height="46" rx="4" fill="none" style="stroke: var(--red); opacity: 0.35" stroke-width="1"/>',
-        '  <line x1="260" y1="38" x2="268" y2="38" style="stroke: var(--red); opacity: 0.5" stroke-width="1"/>',
-        '  <text x="278" y="38" style="fill: var(--red)" font-size="9" font-family="monospace" font-weight="bold">10× team average</text>',
+        '  <rect x="268" y="22" width="120" height="46" rx="4" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>',
+        '  <line x1="260" y1="38" x2="268" y2="38" stroke="rgba(239,68,68,0.4)" stroke-width="1"/>',
+        '  <text x="278" y="38" fill="#ef4444" font-size="9" font-family="monospace" font-weight="bold">10× team average</text>',
         '  <text x="278" y="52" style="fill: var(--text-2)" font-size="8" font-family="monospace">Investigate first.</text>',
         '  <text x="278" y="63" style="fill: var(--text-3)" font-size="8" font-family="monospace">High spend ≠ waste.</text>',
         '  <!-- User labels -->',
         '  <text x="101" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Alex</text>',
         '  <text x="169" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Sam</text>',
-        '  <text x="238" y="170" style="fill: var(--red)" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Jordan</text>',
+        '  <text x="238" y="170" fill="#ef4444" font-size="9" font-family="monospace" text-anchor="middle" font-weight="bold">Jordan</text>',
         '  <text x="307" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Taylor</text>',
         '  <text x="375" y="170" style="fill: var(--text-3)" font-size="9" font-family="monospace" text-anchor="middle">Casey</text>',
         '</svg>'
@@ -1992,7 +1961,8 @@ function buildSectionHero(eyebrow, headline, standfirst, className, whyItMatters
     eyebrowEl.textContent = eyebrow;
 
     var headlineEl = document.createElement('h2');
-    headlineEl.className = 'hook-headline section-hero-headline';
+    headlineEl.className = 'hook-headline';
+    headlineEl.style.fontSize = 'clamp(1.75rem,4vw,3rem)';
     headlineEl.textContent = headline;
 
     var standfirstEl = document.createElement('p');

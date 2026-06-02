@@ -124,22 +124,11 @@
     padding: var(--s6);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255,255,255,0.03);
-    transition: border-color var(--t-base), box-shadow var(--t-base), transform var(--t-base);
+    transition: border-color var(--t-base), box-shadow var(--t-base);
 }
 
 .card:hover {
     border-color: var(--border-2);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 0 1px var(--amber-glow), inset 0 1px 0 rgba(255,255,255,0.04);
-}
-
-.card-amber:hover {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 24px rgba(245,158,11,0.18), inset 0 1px 0 rgba(255,255,255,0.04);
-}
-
-.card-cyan:hover {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 24px rgba(6,182,212,0.18), inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
 .card-amber {
@@ -182,14 +171,6 @@
     border-radius: var(--r6);
     overflow: hidden;
     position: relative;
-    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255,255,255,0.03);
-    transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
-}
-
-.news-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-2);
-    box-shadow: 0 14px 36px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
 .news-card-header {
@@ -322,65 +303,57 @@
 .quiz-options {
     display: flex;
     flex-direction: column;
-    gap: var(--s4);
+    gap: var(--s3);
 }
 
 .quiz-option {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--s4);
     padding: var(--s4) var(--s5);
     background: var(--surface-3);
     border: 1px solid var(--border);
-    border-left: 3px solid transparent;
     border-radius: var(--r4);
     cursor: pointer;
     transition: all var(--t-base);
     text-align: left;
     width: 100%;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-2);
     line-height: 1.5;
-    box-shadow: var(--shadow-sm);
 }
 
 .quiz-option:hover:not(:disabled) {
     background: var(--surface-4);
     border-color: var(--border-2);
-    border-left-color: var(--amber);
     color: var(--text);
-    transform: translateX(4px);
-    box-shadow: var(--shadow-md), -4px 0 0 -1px var(--amber-glow);
 }
 
 .quiz-option-key {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     color: var(--text-3);
-    background: var(--surface);
-    border: 1px solid var(--border-2);
-    border-radius: var(--r3);
-    width: 28px;
-    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    margin-top: 1px;
     transition: all var(--t-base);
 }
 
 .quiz-option:hover .quiz-option-key {
-    border-color: var(--amber);
+    border-color: var(--amber-dark);
     color: var(--amber);
-    background: var(--amber-glow);
-    transform: scale(1.08);
 }
 
 .quiz-option.correct {
     border-color: var(--green);
-    border-left-color: var(--green);
     background: var(--green-glow);
     color: var(--text);
     animation: correctPulse 0.5s ease;
@@ -394,7 +367,6 @@
 
 .quiz-option.incorrect {
     border-color: var(--red);
-    border-left-color: var(--red);
     background: var(--red-glow);
     animation: wrongShake 0.4s ease;
 }
@@ -423,7 +395,6 @@
     line-height: 1.6;
     display: flex;
     gap: var(--s3);
-    animation: fadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .quiz-feedback.correct {
@@ -689,7 +660,6 @@
 .vendor-card {
     background: var(--surface-2);
     border: 1px solid var(--border);
-    border-top: 3px solid var(--vendor-color, var(--border));
     border-radius: var(--r6);
     padding: var(--s5);
     display: flex;
@@ -698,31 +668,11 @@
     transition: all var(--t-base);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
-}
-
-/* Faint brand-colour wash in the top corner so each card reads as a distinct bet at rest */
-.vendor-card::after {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 120px; height: 120px;
-    background: radial-gradient(circle at top right, var(--vendor-color, transparent) 0%, transparent 70%);
-    opacity: 0.10;
-    pointer-events: none;
-    transition: opacity var(--t-base);
 }
 
 .vendor-card:hover {
-    border-color: var(--vendor-color, var(--border-2));
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 22px color-mix(in srgb, var(--vendor-color) 22%, transparent);
-}
-
-.vendor-card:hover::after { opacity: 0.18; }
-
-.vendor-card .vendor-icon {
-    color: var(--vendor-color, var(--text));
+    border-color: var(--border-2);
+    box-shadow: var(--shadow-md);
 }
 
 .vendor-logo {
@@ -968,8 +918,8 @@
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 50%;
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -978,21 +928,12 @@
     color: var(--text-2);
     transition: all var(--t-base);
     flex-shrink: 0;
-    position: relative;
-}
-
-/* Extend the touch target to 44px minimum without enlarging the visual circle */
-.theme-toggle-btn::after {
-    content: '';
-    position: absolute;
-    inset: -5px;
 }
 
 .theme-toggle-btn:hover {
     background: var(--surface-3);
     border-color: var(--amber-dark);
     color: var(--amber);
-    transform: translateY(-1px);
 }
 
 .prompt-textarea::placeholder {
@@ -1152,7 +1093,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-size: 16rem;
     font-family: var(--font-display);
     font-weight: 900;
-    color: rgba(245,158,11,0.07);
+    color: rgba(245,158,11,0.035);
     line-height: 1;
     pointer-events: none;
     user-select: none;
@@ -1297,12 +1238,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-weight: 700;
     margin-bottom: 2px;
     font-family: var(--font-display);
-}
-
-/* Tier name can be two words — let it shrink and wrap inside the stat box */
-.certificate-meta-item-sm span {
-    font-size: 0.78rem;
-    line-height: 1.1;
 }
 
 .certificate-issued {

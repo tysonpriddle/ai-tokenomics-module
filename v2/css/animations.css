@@ -216,53 +216,6 @@
     to   { stroke-dashoffset: 0; }
 }
 
-/* ---- Cost chart draw-on (triggered by .is-visible via IntersectionObserver) ---- */
-
-.cost-line,
-.cost-line-glow {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-}
-
-.svg-infographic.is-visible .cost-line {
-    animation: drawCostLine 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.svg-infographic.is-visible .cost-line-glow {
-    animation: drawCostLine 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes drawCostLine {
-    to { stroke-dashoffset: 0; }
-}
-
-/* Terminal data point pops as the line completes */
-.cost-line-dot {
-    transform-box: fill-box;
-    transform-origin: center;
-    transform: scale(0);
-}
-
-.svg-infographic.is-visible .cost-line-dot {
-    animation: popCostDot 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 1.25s forwards;
-}
-
-@keyframes popCostDot {
-    to { transform: scale(1); }
-}
-
-/* Anomaly pulse ring breathes continuously to draw the eye */
-.anomaly-pulse {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: anomalyBreathe 2s ease-in-out infinite;
-}
-
-@keyframes anomalyBreathe {
-    0%, 100% { transform: scale(1); opacity: 0.25; }
-    50%       { transform: scale(1.5); opacity: 0.05; }
-}
-
 /* ---- Hover pulse for interactive elements ---- */
 
 @keyframes hoverPulse {
@@ -309,56 +262,21 @@
 
 /* ---- Stagger utility ---- */
 
-.stagger-1 { animation-delay: 0.06s; }
-.stagger-2 { animation-delay: 0.13s; }
-.stagger-3 { animation-delay: 0.20s; }
-.stagger-4 { animation-delay: 0.27s; }
-.stagger-5 { animation-delay: 0.34s; }
-.stagger-6 { animation-delay: 0.41s; }
-.stagger-7 { animation-delay: 0.48s; }
-.stagger-8 { animation-delay: 0.55s; }
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.10s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.20s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.30s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.40s; }
 
-/* ---- Applied animation classes ----
-   IMPORTANT: keep timing-function OUT of the `animation` shorthand.
-   The shorthand reads a second time value as animation-delay, so a
-   cubic-bezier var that resolves to "600ms cubic-bezier(...)" would be
-   parsed as a 600ms delay and silently override every .stagger-N. */
+/* ---- Applied animation classes ---- */
 
-.anim-fade-up {
-    animation-name: fadeSlideUp;
-    animation-duration: 0.5s;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    animation-fill-mode: both;
-}
-.anim-fade-in {
-    animation-name: fadeIn;
-    animation-duration: 0.3s;
-    animation-timing-function: ease;
-    animation-fill-mode: both;
-}
-.anim-slide-right {
-    animation-name: slideInRight;
-    animation-duration: 0.45s;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    animation-fill-mode: both;
-}
-.anim-slide-left {
-    animation-name: slideInLeft;
-    animation-duration: 0.45s;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    animation-fill-mode: both;
-}
+.anim-fade-up      { animation: fadeSlideUp 0.45s var(--t-xslow) both; }
+.anim-fade-in      { animation: fadeIn 0.3s ease both; }
+.anim-slide-right  { animation: slideInRight 0.4s var(--t-xslow) both; }
+.anim-slide-left   { animation: slideInLeft 0.4s var(--t-xslow) both; }
 
 .section-enter     { animation: fadeSlideUp 0.5s cubic-bezier(0.16,1,0.3,1) both; }
 .section-exit      { animation: fadeOut 0.25s ease both; }
-
-/* ---- Accessibility: respect reduced-motion preference (WCAG 2.3.3) ---- */
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-}

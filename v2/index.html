@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AI Tokenomics: Cost, Consumption and Control</title>
+
+  <!-- Preconnect disabled — offline LMS, no CDN -->
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/themes.css">
+</head>
+<body>
+
+  <a href="#app-main" class="skip-link">Skip to main content</a>
+
+  <!-- ══════════════════════════════════════════════════════
+       APP SHELL — populated by main.js buildShell()
+       ══════════════════════════════════════════════════════ -->
+
+  <header id="app-header" role="banner" aria-label="Module navigation">
+    <!-- Dynamically built: logo | progress | streak | tier | TC counter -->
+  </header>
+
+  <main id="app-main" role="main" aria-live="polite" aria-atomic="false">
+    <!-- Section content rendered here by navigateTo() -->
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════
+       OVERLAY — badge reveals, tier-up, easter eggs
+       ══════════════════════════════════════════════════════ -->
+  <div id="overlay" role="dialog" aria-modal="true" aria-label="Achievement notification" class="hidden">
+    <div id="overlay-inner"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       TOAST — transient notifications (bottom-right)
+       ══════════════════════════════════════════════════════ -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ══════════════════════════════════════════════════════
+       DEBUG PANEL — visible when ?debug=true
+       ══════════════════════════════════════════════════════ -->
+  <div id="debug-panel" role="complementary" aria-label="SCORM debug log" hidden>
+    <div id="debug-header">
+      <span>SCORM Debug Log</span>
+      <button id="debug-clear" type="button">Clear</button>
+      <button id="debug-close" type="button">✕</button>
+    </div>
+    <div id="debug-log"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       SCRIPTS — dependency order matters
+       scorm    → no deps
+       xapi     → no deps
+       game     → scorm (for awardTC persistence)
+       content  → no deps (pure data)
+       interact → content, game
+       main     → all of the above
+       ══════════════════════════════════════════════════════ -->
+  <script src="js/scorm.js"></script>
+  <script src="js/xapi.js"></script>
+  <script src="js/sounds.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/interactions.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    // Debug panel toggle — activated by ?debug=true in URL
+    (function () {
+      var panel = document.getElementById('debug-panel');
+      if (window.location.search.indexOf('debug=true') !== -1) {
+        panel.hidden = false;
+      }
+      document.getElementById('debug-clear').addEventListener('click', function () {
+        document.getElementById('debug-log').textContent = '';
+      });
+      document.getElementById('debug-close').addEventListener('click', function () {
+        panel.hidden = true;
+      });
+    }());
+  </script>
+
+</body>
+</html>
